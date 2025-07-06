@@ -1,34 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القوانين اليمنية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-<style>
-.custom-header {
-    background: linear-gradient(to left, #185a9d, #43cea2);
-    padding: 40px 20px;
-    border-radius: 12px;
-    text-align: center;
-    color: white;
-    font-family: 'Cairo', sans-serif;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-.custom-header h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-    font-weight: 800;
-}
-.custom-header p {
-    font-size: 20px;
-    margin: 0;
-    opacity: 0.9;
-}
-.justice-icon {
-    font-size: 60px;
-    margin-bottom: 15px;
-    display: inline-block;
-}
-</style>
+        .custom-header {
+            background: linear-gradient(to right, #185a9d, #43cea2); /* Changed direction for a softer flow */
+            padding: 50px 30px; /* Increased padding */
+            border-radius: 15px; /* Slightly more rounded corners */
+            text-align: center;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Enhanced shadow for more depth */
+            max-width: 800px; /* Max width for better control on large screens */
+            width: 100%;
+            position: relative; /* For potential future elements */
+            overflow: hidden; /* Ensures nothing spills out of rounded corners */
+        }
 
-<div class="custom-header">
-    <div class="justice-icon">⚖️</div>
-    <h1>القوانين اليمنية</h1>
-    <p>بآخر تعديلاتها حتى عام 2025</p>
-</div>
+        .custom-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05); /* Subtle overlay for texture */
+            transform: rotate(30deg);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .custom-header > * { /* Ensures content is above the overlay */
+            position: relative;
+            z-index: 2;
+        }
+
+        .justice-icon {
+            font-size: 70px; /* Slightly larger icon */
+            margin-bottom: 20px; /* Increased margin */
+            display: inline-block;
+            animation: bounceIn 1s ease-out; /* Simple entry animation */
+        }
+
+        .custom-header h1 {
+            font-size: 42px; /* Larger heading */
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: 1px; /* Slightly increased letter spacing for readability */
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Text shadow for depth */
+        }
+
+        .custom-header p {
+            font-size: 22px; /* Larger sub-text */
+            margin: 0;
+            opacity: 0.95; /* Slightly less opacity for contrast */
+            line-height: 1.6; /* Improved line height */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .custom-header {
+                padding: 40px 25px;
+            }
+            .custom-header h1 {
+                font-size: 34px;
+            }
+            .custom-header p {
+                font-size: 18px;
+            }
+            .justice-icon {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .custom-header {
+                padding: 30px 20px;
+                border-radius: 10px;
+            }
+            .custom-header h1 {
+                font-size: 28px;
+            }
+            .custom-header p {
+                font-size: 16px;
+            }
+            .justice-icon {
+                font-size: 50px;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Keyframe for bounceIn animation */
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.1);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="custom-header">
+        <div class="justice-icon">⚖️</div>
+        <h1>القوانين اليمنية</h1>
+        <p>بآخر تعديلاتها حتى عام 2025</p>
+    </div>
+
+</body>
+</html>
