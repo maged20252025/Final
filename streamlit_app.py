@@ -112,6 +112,16 @@ def run_main_app():
     # إضافة CSS لتصحيح اتجاه مربع النص وزر التصدير والعداد
     components.html("""
     <style>
+    /* تجاوز عرض حاوية المحتوى الرئيسية لـ Streamlit */
+    .stApp > header {
+        max-width: none !important; /* لإزالة أي قيود عرض في الهيدر */
+    }
+    .stApp > div:first-child > div:first-child > div {
+        max-width: none !important; /* للحاوية الرئيسية للمحتوى */
+        padding-left: 1rem; /* إعادة ضبط الهوامش إذا لزم الأمر */
+        padding-right: 1rem; /* إعادة ضبط الهوامش إذا لزم الأمر */
+    }
+
     .scroll-btn {
         position: fixed;
         left: 10px;
@@ -329,96 +339,99 @@ def run_main_app():
             filtered = results if selected_law_filter == "الكل" else [r for r in results if r["law"] == selected_law_filter]
 
             for i, r in enumerate(filtered):
-                with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
-                    # ---- تم تعديل هذا الجزء لتوسيع عرض البطاقة بشكل صحيح ----
-                    st.markdown(f'''
-                    <div style="background-color:#f1f8e9;margin-bottom:10px;width: 100%; border-radius:10px;
-                                 border:1px solid #c5e1a5;direction:rtl;text-align:right;">
-                        <p style="font-size:17px;line-height:1.8;margin-top:0px; padding: 20px;">
-                            {r["text"]}
-                        </p>
-                    </div>
-                    ''', unsafe_allow_html=True)
-                    # زر نسخ المادة بشكل احترافي مع التحسينات الجديدة
-                    components.html(f"""
-                        <style>
-                        .copy-material-btn {{
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 10px;
-                            /* تحديث التدرج اللوني */
-                            background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%); /* ألوان أكثر حيوية */
-                            color: #fff;
-                            border: none;
-                            border-radius: 30px;
-                            font-size: 18px;
-                            font-family: 'Cairo', 'Tajawal', sans-serif;
-                            padding: 10px 22px;
-                            cursor: pointer;
-                            /* تحديث الظلال */
-                            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4); /* ظل أزرق ناعم */
-                            transition: all 0.3s ease; /* إضافة 'all' للانتقالات السلسة */
-                            margin-bottom: 10px;
-                            direction: rtl;
-                            white-space: nowrap; /* منع انقسام النص */
-                        }}
-                        .copy-material-btn:hover {{
-                            /* تأثير عند التمرير */
-                            background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
-                            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
-                            transform: translateY(-2px); /* رفع الزر قليلاً */
-                        }}
-                        .copy-material-btn .copy-icon {{
-                            /* أيقونة النسخ الأصلية */
-                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
-                            margin-left: 8px;
-                            display: block; /* لجعل SVG تعمل بشكل جيد */
-                        }}
-                        .copy-material-btn .copied-check {{
-                            /* أيقونة تم النسخ */
-                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
-                            color: #fff; /* لون أبيض لأيقونة الصح */
-                            margin-left: 8px;
-                            display: none;
-                        }}
-                        .copy-material-btn.copied .copy-icon {{
-                            display: none;
-                        }}
-                        .copy-material-btn.copied .copied-check {{
-                            display: inline;
-                            animation: fadein-check 0.5s ease-out; /* حركة أسرع وأكثر نعومة */
-                        }}
-                        @keyframes fadein-check {{
-                            0% {{ opacity: 0; transform: scale(0.7); }}
-                            100% {{ opacity: 1; transform: scale(1); }}
-                        }}
-                        </style>
-                        <button class="copy-material-btn" id="copy_btn_{i}_{r['law']}_{r['num']}" onclick="
-                            navigator.clipboard.writeText(document.getElementById('plain_text_{i}_{r['law']}_{r['num']}').innerText);
-                            var btn = document.getElementById('copy_btn_{i}_{r['law']}_{r['num']}');
-                            btn.classList.add('copied');
-                            setTimeout(function(){{
-                                btn.classList.remove('copied');
-                            }}, 1800);
-                        ">
-                            <span class="copy-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                            </span>
-                            <span>نسخ</span>
-                            <span class="copied-check">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                تم النسخ!
-                            </span>
-                        </button>
-                        <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
-                    """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
+                # ---- استخدام st.columns لتوسيع العرض ----
+                col1, = st.columns([1]) # عمود واحد يأخذ كل العرض المتاح ضمن حاوية Streamlit
+                with col1:
+                    with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
+                        st.markdown(f'''
+                        <div style="background-color:#f1f8e9;margin-bottom:10px;width: 100%; border-radius:10px;
+                                     border:1px solid #c5e1a5;direction:rtl;text-align:right;">
+                            <p style="font-size:17px;line-height:1.8;margin-top:0px; padding: 20px;">
+                                {r["text"]}
+                            </p>
+                        </div>
+                        ''', unsafe_allow_html=True)
+                        # زر نسخ المادة بشكل احترافي مع التحسينات الجديدة
+                        components.html(f"""
+                            <style>
+                            .copy-material-btn {{
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 10px;
+                                /* تحديث التدرج اللوني */
+                                background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%); /* ألوان أكثر حيوية */
+                                color: #fff;
+                                border: none;
+                                border-radius: 30px;
+                                font-size: 18px;
+                                font-family: 'Cairo', 'Tajawal', sans-serif;
+                                padding: 10px 22px;
+                                cursor: pointer;
+                                /* تحديث الظلال */
+                                box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4); /* ظل أزرق ناعم */
+                                transition: all 0.3s ease; /* إضافة 'all' للانتقالات السلسة */
+                                margin-bottom: 10px;
+                                direction: rtl;
+                                white-space: nowrap; /* منع انقسام النص */
+                            }}
+                            .copy-material-btn:hover {{
+                                /* تأثير عند التمرير */
+                                background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
+                                box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
+                                transform: translateY(-2px); /* رفع الزر قليلاً */
+                            }}
+                            .copy-material-btn .copy-icon {{
+                                /* أيقونة النسخ الأصلية */
+                                font-size: 20px; /* حجم مناسب لأيقونة SVG */
+                                margin-left: 8px;
+                                display: block; /* لجعل SVG تعمل بشكل جيد */
+                            }}
+                            .copy-material-btn .copied-check {{
+                                /* أيقونة تم النسخ */
+                                font-size: 20px; /* حجم مناسب لأيقونة SVG */
+                                color: #fff; /* لون أبيض لأيقونة الصح */
+                                margin-left: 8px;
+                                display: none;
+                            }}
+                            .copy-material-btn.copied .copy-icon {{
+                                display: none;
+                            }}
+                            .copy-material-btn.copied .copied-check {{
+                                display: inline;
+                                animation: fadein-check 0.5s ease-out; /* حركة أسرع وأكثر نعومة */
+                            }}
+                            @keyframes fadein-check {{
+                                0% {{ opacity: 0; transform: scale(0.7); }}
+                                100% {{ opacity: 1; transform: scale(1); }}
+                            }}
+                            </style>
+                            <button class="copy-material-btn" id="copy_btn_{i}_{r['law']}_{r['num']}" onclick="
+                                navigator.clipboard.writeText(document.getElementById('plain_text_{i}_{r['law']}_{r['num']}').innerText);
+                                var btn = document.getElementById('copy_btn_{i}_{r['law']}_{r['num']}');
+                                btn.classList.add('copied');
+                                setTimeout(function(){{
+                                    btn.classList.remove('copied');
+                                }}, 1800);
+                            ">
+                                <span class="copy-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </span>
+                                <span>نسخ</span>
+                                <span class="copied-check">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    تم النسخ!
+                                </span>
+                            </button>
+                            <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
+                        """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
         else:
-            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
+            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")
+            # ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
 # ----------------------------------------------------
 def main():
