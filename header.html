@@ -1,3 +1,7 @@
+import streamlit as st
+
+# بداية كود HTML للرأس (من الكود الذي أعطيتك إياه سابقاً)
+header_html = """
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,49 +13,48 @@
         body {
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #f0f2f5; /* لون خلفية ناعم لجعل الرأس يبرز */
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* يبدأ من الأعلى */
+            align-items: flex-start;
             min-height: 100vh;
             padding: 30px;
             box-sizing: border-box;
-            overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
+            overflow-x: hidden;
         }
 
         .custom-header {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* تدرج لوني عميق وأنيق */
-            padding: 60px 40px; /* زيادة كبيرة في المسافات الداخلية للفخامة */
-            border-radius: 20px; /* زوايا أكثر استدارة وجمالية */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 60px 40px;
+            border-radius: 20px;
             text-align: center;
             color: white;
             font-family: 'Cairo', sans-serif;
             margin-bottom: 40px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* ظل عميق وواقعي */
-            max-width: 900px; /* زيادة العرض الأقصى للرأس */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
             width: 100%;
             position: relative;
-            overflow: hidden; /* هام لأي تأثيرات داخلية */
+            overflow: hidden;
             transform: translateY(0);
-            transition: transform 0.5s ease-out, box-shadow 0.5s ease-out; /* إضافة انتقال سلس */
+            transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
         }
 
         .custom-header:hover {
-            transform: translateY(-5px); /* تأثير رفع خفيف عند التحويم */
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* ظل أكبر عند التحويم */
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        /* إضافة تأثيرات ضوئية / جزيئات للخلفية */
         .custom-header::before,
         .custom-header::after {
             content: '';
             position: absolute;
-            background: rgba(255, 255, 255, 0.08); /* لون أبيض شفاف جداً */
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0; /* تبدأ مخفية */
-            animation: fadeInOut 8s infinite ease-in-out; /* حركة خفيفة وناعمة */
+            opacity: 0;
+            animation: fadeInOut 8s infinite ease-in-out;
         }
 
         .custom-header::before {
@@ -69,7 +72,7 @@
             bottom: -20px;
             right: -20px;
             transform: scale(0);
-            animation-delay: 4s; /* تأخير لبدء حركة مختلفة */
+            animation-delay: 4s;
         }
 
         @keyframes fadeInOut {
@@ -78,16 +81,15 @@
             100% { opacity: 0; transform: scale(0); }
         }
 
-
         .justice-icon {
-            font-size: 85px; /* أيقونة أكبر وأكثر بروزاً */
-            margin-bottom: 25px; /* مسافة أكبر */
+            font-size: 85px;
+            margin-bottom: 25px;
             display: inline-block;
-            color: #43cea2; /* لون مميز للأيقونة */
-            text-shadow: 0 0 15px rgba(67, 206, 162, 0.7), 0 0 30px rgba(67, 206, 162, 0.5); /* وهج حول الأيقونة */
-            animation: pulse 2s infinite ease-in-out; /* تأثير نبض خفيف */
+            color: #43cea2;
+            text-shadow: 0 0 15px rgba(67, 206, 162, 0.7), 0 0 30px rgba(67, 206, 162, 0.5);
+            animation: pulse 2s infinite ease-in-out;
             position: relative;
-            z-index: 2; /* للتأكد من أنها فوق التأثيرات الأخرى */
+            z-index: 2;
         }
 
         @keyframes pulse {
@@ -97,27 +99,26 @@
         }
 
         .custom-header h1 {
-            font-size: 48px; /* حجم عنوان أكبر بكثير */
+            font-size: 48px;
             margin-bottom: 15px;
-            font-weight: 800; /* خط سميك جداً */
-            letter-spacing: 2px; /* تباعد الحروف لمظهر أكثر فخامة */
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* ظل نصي عميق */
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 2;
         }
 
         .custom-header p {
-            font-size: 24px; /* حجم نص فرعي أكبر وأكثر وضوحاً */
+            font-size: 24px;
             margin: 0;
             opacity: 0.95;
             line-height: 1.6;
-            font-weight: 300; /* خط خفيف لتباين مع العنوان */
+            font-weight: 300;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             position: relative;
             z-index: 2;
         }
 
-        /* تعديلات للمسافات عند الشاشات الصغيرة */
         @media (max-width: 768px) {
             .custom-header {
                 padding: 40px 25px;
@@ -161,12 +162,18 @@
     </style>
 </head>
 <body>
-
     <div class="custom-header">
         <div class="justice-icon">⚖️</div>
         <h1>القوانين اليمنية</h1>
         <p>بآخر تعديلاتها حتى عام 2025</p>
     </div>
-
 </body>
 </html>
+"""
+
+# استخدام st.markdown لعرض كود HTML
+st.markdown(header_html, unsafe_allow_html=True)
+
+# يمكنك إضافة بقية محتوى تطبيق Streamlit هنا
+st.write("مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل")
+st.write("النسخة التجريبية المجانية")
