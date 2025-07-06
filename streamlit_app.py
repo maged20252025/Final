@@ -121,7 +121,13 @@ def run_main_app():
     # مع الاعتماد على 'layout="wide"' في 'st.set_page_config'
     components.html("""
     <style>
-    /* CSS أزرار التمرير (حافظنا عليها) */
+    /* ------------------------------------------------------------------ */
+    /* *** التغيير الأساسي هنا: تم إزالة جميع قواعد CSS التي كانت تستهدف تخطيط Streamlit الأساسي *** */
+    /* *** مثل: .stApp > header, .stApp > div:first-child > div:nth-child(1) ... إلخ *** */
+    /* *** هذه القواعد كانت تتعارض مع 'layout="wide"' وتمنع العرض الكامل. *** */
+    /* ------------------------------------------------------------------ */
+
+    /* CSS أزرار التمرير (حافظنا عليها - لا تؤثر على التخطيط العام) */
     .scroll-btn {
         position: fixed;
         left: 10px;
@@ -138,7 +144,8 @@ def run_main_app():
     #scroll-top-btn { bottom: 80px; }
     #scroll-bottom-btn { bottom: 20px; }
     
-    /* CSS لمكونات Streamlit لجعلها RTL (حافظنا عليها) */
+    /* CSS لمكونات Streamlit لجعلها RTL (حافظنا عليها - لا تؤثر على التخطيط العام) */
+    /* هذه القواعد ضرورية فقط لتنسيق النص واتجاهه داخل العناصر، وليست لتحديد عرضها. */
     .rtl-metric {
         direction: rtl;
         text-align: right !important;
@@ -168,6 +175,53 @@ def run_main_app():
     .stButton, .stDownloadButton, .stMetric {
         direction: rtl !important;
         text-align: right !important;
+    }
+
+    /* CSS لزر النسخ (حافظنا عليها - لا تؤثر على التخطيط العام) */
+    .copy-material-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%);
+        color: #fff;
+        border: none;
+        border-radius: 30px;
+        font-size: 18px;
+        font-family: 'Cairo', 'Tajawal', sans-serif;
+        padding: 10px 22px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+        direction: rtl;
+        white-space: nowrap;
+    }
+    .copy-material-btn:hover {
+        background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
+        box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
+        transform: translateY(-2px);
+    }
+    .copy-material-btn .copy-icon {
+        font-size: 20px;
+        margin-left: 8px;
+        display: block;
+    }
+    .copy-material-btn .copied-check {
+        font-size: 20px;
+        color: #fff;
+        margin-left: 8px;
+        display: none;
+    }
+    .copy-material-btn.copied .copy-icon {
+        display: none;
+    }
+    .copy-material-btn.copied .copied-check {
+        display: inline;
+        animation: fadein-check 0.5s ease-out;
+    }
+    @keyframes fadein-check {
+        0% { opacity: 0; transform: scale(0.7); }
+        100% { opacity: 1; transform: scale(1); }
     }
     </style>
     <button class='scroll-btn' id='scroll-top-btn' onclick='window.scrollTo({top: 0, behavior: "smooth"});'>⬆️</button>
@@ -340,7 +394,9 @@ def run_main_app():
             for i, r in enumerate(filtered):
                 # Expander داخل Streamlit يجب أن يأخذ العرض الكامل بشكل تلقائي مع layout="wide"
                 with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
-                    # هذا هو الجزء الذي يحدد عرض البطاقة الخضراء، تم تعديله ليكون مثل النسخة الاحتياطية
+                    # هذا هو الجزء الذي يحدد عرض البطاقة الخضراء
+                    # تم تصميم هذا الـ div ليكون مرناً ويأخذ العرض الكامل المتاح له
+                    # بدون استخدام 'width: 100%' أو 'max-width' التي قد تتعارض.
                     st.markdown(f'''
                     <div style="background-color:#f1f8e9;padding:15px;margin-bottom:15px;border-radius:10px;
                                 border:1px solid #c5e1a5;direction:rtl;text-align:right; overflow-wrap: break-word;">
@@ -405,26 +461,7 @@ def run_main_app():
                             btn.classList.add('copied');
                             setTimeout(function(){{
                                 btn.classList.remove('copied');
-                            }}, 1800);
-                        ">
-                            <span class="copy-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                            </span>
-                            <span>نسخ</span>
-                            <span class="copied-check">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                تم النسخ!
-                            </span>
-                        </button>
-                        <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
-                    """, height=60)
-        else:
-            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
+                            }},# ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
 # ----------------------------------------------------
 def main():
@@ -477,8 +514,7 @@ def main():
             if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
                 register_trial(device_id)
                 st.success("✅ تم تفعيل النسخة التجريبية المجانية بنجاح.")
-                # st.rerun()  # لا حاجة لـ rerun هنا، سنستدعي run_main_app مباشرة
-                run_main_app()
+                run_main_app() # تشغيل التطبيق مباشرة بعد التفعيل
                 st.stop() # يوقف التنفيذ بعد تشغيل التطبيق في الوضع التجريبي
 
         if trial_start is not None:
@@ -502,7 +538,7 @@ def main():
                     </div>
                     """, unsafe_allow_html=True
                 )
-                run_main_app()
+                run_main_app() # تشغيل التطبيق في الوضع التجريبي
             else:
                 st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
 
