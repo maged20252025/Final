@@ -330,11 +330,11 @@ def run_main_app():
 
             for i, r in enumerate(filtered):
                 with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
-                    # ---- تم تعديل هذا الجزء لتوسيع عرض البطاقة ----
+                    # ---- تم تعديل هذا الجزء لتوسيع عرض البطاقة بشكل صحيح ----
                     st.markdown(f'''
-                    <div style="background-color:#f1f8e9;padding:20px;margin-bottom:10px;width: 95%; max-width: 95%;border-radius:10px;
-                                 border:1px solid #c5e1a5;direction:rtl;text-align:right; margin-left: auto; margin-right: auto;">
-                        <p style="font-size:17px;line-height:1.8;margin-top:0px;">
+                    <div style="background-color:#f1f8e9;margin-bottom:10px;width: 100%; border-radius:10px;
+                                 border:1px solid #c5e1a5;direction:rtl;text-align:right;">
+                        <p style="font-size:17px;line-height:1.8;margin-top:0px; padding: 20px;">
                             {r["text"]}
                         </p>
                     </div>
@@ -418,8 +418,7 @@ def run_main_app():
                         <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
                     """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
         else:
-            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")
-            # ----------------------------------------------------
+            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
 # ----------------------------------------------------
 def main():
