@@ -22,7 +22,7 @@ st.set_page_config(
 # ----------------------------------------------------
 # ثوابت ومتغيرات عامة
 # ----------------------------------------------------
-TRIAL_DURATION = 3 * 24 * 60 * 60  # 3 أيام (يمكنك تغييرها لاحقًا إلى 180 ثانية للاختبار)
+TRIAL_DURATION = 3 * 24 * 60 * 60  # 3 أيام (يمكنك تغييرها لاحقًا لاختبار أسرع)
 TRIAL_USERS_FILE = "trial_users.txt"
 DEVICE_ID_FILE = "device_id.txt"
 ACTIVATED_FILE = "activated.txt"
@@ -78,8 +78,15 @@ def activate_app(code):
     return False
 
 def highlight_keywords(text, keywords):
+    # استخدام str(text) للتعامل مع أي نوع بيانات قد يأتي
+    text = str(text)
+    # إزالة مسافات غير مرئية أو مشاكل ترميز
+    text = text.replace('\xa0', ' ').replace('\u200b', '')
+    
     for kw in keywords:
-        text = re.sub(f"({re.escape(kw)})", r"<mark>\1</mark>", text, flags=re.IGNORECASE)
+        # استخدام re.escape لضمان أن الكلمات المفتاحية التي تحتوي على أحرف خاصة لا تكسر regex
+        # إضافة re.UNICODE للتعامل الصحيح مع أحرف اليونيكود العربية
+        text = re.sub(f"({re.escape(kw)})", r"<mark>\1</mark>", text, flags=re.IGNORECASE | re.UNICODE)
     return text
 
 def export_results_to_word(results, filename="نتائج_البحث.docx"):
@@ -91,7 +98,7 @@ def export_results_to_word(results, filename="نتائج_البحث.docx"):
     else:
         for i, r in enumerate(results):
             document.add_heading(f"القانون: {r['law']} - المادة: {r['num']}", level=2)
-            document.add_paragraph(r['plain'])
+            document.add_paragraph(r['plain']) # تصدير النص الأصلي غير الملون
             if i < len(results) - 1:
                 document.add_page_break() 
 
@@ -110,11 +117,11 @@ def normalize_arabic_numbers(text):
 # ----------------------------------------------------
 def run_main_app():
     # إضافة CSS لتصحيح اتجاه مربع النص وزر التصدير والعداد
+    # تم تبسيط هذا الجزء وإزالة الـ CSS الذي كان يحاول تجاوز عرض Streamlit الداخلي،
+    # مع الاعتماد على 'layout="wide"' في 'st.set_page_config'
     components.html("""
     <style>
-    /* تم إزالة CSS الذي كان يحاول تجاوز عرض الحاويات الرئيسية،
-       لأن 'layout="wide"' يجب أن يكون كافيًا، وربما كان الـ CSS السابق يسبب مشاكل. */
-
+    /* CSS أزرار التمرير (حافظنا عليها) */
     .scroll-btn {
         position: fixed;
         left: 10px;
@@ -130,7 +137,8 @@ def run_main_app():
     }
     #scroll-top-btn { bottom: 80px; }
     #scroll-bottom-btn { bottom: 20px; }
-    /* ---- تخصيص المحاذاة لليمين للـ Metric والـ Download button ---- */
+    
+    /* CSS لمكونات Streamlit لجعلها RTL (حافظنا عليها) */
     .rtl-metric {
         direction: rtl;
         text-align: right !important;
@@ -153,12 +161,10 @@ def run_main_app():
         flex-direction: row-reverse;
         justify-content: flex-start;
     }
-    /* --------- اجبار مربعات النصوص للكتابة من اليمين -------- */
     textarea, .stTextArea textarea {
         direction: rtl !important;
         text-align: right !important;
     }
-    /* --------- اجبار كل عناصر النتائج أن تكون يمين -------- */
     .stButton, .stDownloadButton, .stMetric {
         direction: rtl !important;
         text-align: right !important;
@@ -334,11 +340,12 @@ def run_main_app():
             for i, r in enumerate(filtered):
                 # Expander داخل Streamlit يجب أن يأخذ العرض الكامل بشكل تلقائي مع layout="wide"
                 with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
-                    # هذا هو الجزء الذي يحدد عرض البطاقة الخضراء
+                    # هذا هو الجزء الذي يحدد عرض البطاقة الخضراء، تم تعديله ليكون مثل النسخة الاحتياطية
                     st.markdown(f'''
-                    <div style="background-color:#f1f8e9;margin-bottom:10px;width: 100%; border-radius:10px;
-                                 border:1px solid #c5e1a5;direction:rtl;text-align:right;">
-                        <p style="font-size:17px;line-height:1.8;margin-top:0px; padding: 20px;">
+                    <div style="background-color:#f1f8e9;padding:15px;margin-bottom:15px;border-radius:10px;
+                                border:1px solid #c5e1a5;direction:rtl;text-align:right; overflow-wrap: break-word;">
+                        <p style="font-weight:bold;font-size:18px;margin:0">🔷 {r["law"]} - المادة {r["num"]}</p>
+                        <p style="font-size:17px;line-height:1.8;margin-top:10px">
                             {r["text"]}
                         </p>
                     </div>
@@ -350,8 +357,7 @@ def run_main_app():
                             display: inline-flex;
                             align-items: center;
                             gap: 10px;
-                            /* تحديث التدرج اللوني */
-                            background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%); /* ألوان أكثر حيوية */
+                            background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%);
                             color: #fff;
                             border: none;
                             border-radius: 30px;
@@ -359,29 +365,25 @@ def run_main_app():
                             font-family: 'Cairo', 'Tajawal', sans-serif;
                             padding: 10px 22px;
                             cursor: pointer;
-                            /* تحديث الظلال */
-                            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4); /* ظل أزرق ناعم */
-                            transition: all 0.3s ease; /* إضافة 'all' للانتقالات السلسة */
+                            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
+                            transition: all 0.3s ease;
                             margin-bottom: 10px;
                             direction: rtl;
-                            white-space: nowrap; /* منع انقسام النص */
+                            white-space: nowrap;
                         }}
                         .copy-material-btn:hover {{
-                            /* تأثير عند التمرير */
                             background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
                             box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
-                            transform: translateY(-2px); /* رفع الزر قليلاً */
+                            transform: translateY(-2px);
                         }}
                         .copy-material-btn .copy-icon {{
-                            /* أيقونة النسخ الأصلية */
-                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
+                            font-size: 20px;
                             margin-left: 8px;
-                            display: block; /* لجعل SVG تعمل بشكل جيد */
+                            display: block;
                         }}
                         .copy-material-btn .copied-check {{
-                            /* أيقونة تم النسخ */
-                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
-                            color: #fff; /* لون أبيض لأيقونة الصح */
+                            font-size: 20px;
+                            color: #fff;
                             margin-left: 8px;
                             display: none;
                         }}
@@ -390,7 +392,7 @@ def run_main_app():
                         }}
                         .copy-material-btn.copied .copied-check {{
                             display: inline;
-                            animation: fadein-check 0.5s ease-out; /* حركة أسرع وأكثر نعومة */
+                            animation: fadein-check 0.5s ease-out;
                         }}
                         @keyframes fadein-check {{
                             0% {{ opacity: 0; transform: scale(0.7); }}
@@ -420,7 +422,7 @@ def run_main_app():
                             </span>
                         </button>
                         <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
-                    """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
+                    """, height=60)
         else:
             st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
@@ -475,10 +477,9 @@ def main():
             if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
                 register_trial(device_id)
                 st.success("✅ تم تفعيل النسخة التجريبية المجانية بنجاح.")
+                # st.rerun()  # لا حاجة لـ rerun هنا، سنستدعي run_main_app مباشرة
                 run_main_app()
-                st.stop()
-                # ملاحظة: st.stop() يوقف تنفيذ الكود، لذا الرسالة التالية قد لا تظهر للمستخدم
-                # st.warning("يرجى التفاعل مع الصفحة (مثلاً، النقر بالماوس أو التمرير) لتحديث الواجهة وبدء استخدام التطبيق.")
+                st.stop() # يوقف التنفيذ بعد تشغيل التطبيق في الوضع التجريبي
 
         if trial_start is not None:
             elapsed_time = time.time() - trial_start
@@ -514,7 +515,7 @@ def main():
         if st.button("✅ تفعيل الآن", key="activate_button", use_container_width=True):
             if code and activate_app(code.strip()):
                 st.success("✅ تم التفعيل بنجاح! يرجى إعادة تشغيل التطبيق لتطبيق التغييرات.")
-                st.stop()
+                st.stop() # يوقف التنفيذ بعد التفعيل بنجاح
             else:
                 st.error("❌ كود التفعيل غير صحيح أو انتهت صلاحيته.")
 
