@@ -319,7 +319,7 @@ def run_main_app():
             st.markdown('</div>', unsafe_allow_html=True)
         else:
             st.warning("لا توجد نتائج لتصديرها.")
-        
+            
         st.markdown("---")
 
         if results:
@@ -332,20 +332,21 @@ def run_main_app():
                 with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
                     st.markdown(f'''
                     <div style="background-color:#f1f8e9;padding:20px;margin-bottom:10px;width: 100%; max-width: 100%;border-radius:10px;
-                                border:1px solid #c5e1a5;direction:rtl;text-align:right;">
+                                 border:1px solid #c5e1a5;direction:rtl;text-align:right;">
                         <p style="font-size:17px;line-height:1.8;margin-top:0px;">
                             {r["text"]}
                         </p>
                     </div>
                     ''', unsafe_allow_html=True)
-                    # زر نسخ المادة بشكل احترافي
+                    # زر نسخ المادة بشكل احترافي مع التحسينات الجديدة
                     components.html(f"""
                         <style>
                         .copy-material-btn {{
                             display: inline-flex;
                             align-items: center;
                             gap: 10px;
-                            background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+                            /* تحديث التدرج اللوني */
+                            background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%); /* ألوان أكثر حيوية */
                             color: #fff;
                             border: none;
                             border-radius: 30px;
@@ -353,37 +354,41 @@ def run_main_app():
                             font-family: 'Cairo', 'Tajawal', sans-serif;
                             padding: 10px 22px;
                             cursor: pointer;
-                            box-shadow: 0 2px 12px #c5e1a577;
-                            transition: background 0.3s, box-shadow 0.3s;
+                            /* تحديث الظلال */
+                            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4); /* ظل أزرق ناعم */
+                            transition: all 0.3s ease; /* إضافة 'all' للانتقالات السلسة */
                             margin-bottom: 10px;
                             direction: rtl;
+                            white-space: nowrap; /* منع انقسام النص */
                         }}
                         .copy-material-btn:hover {{
-                            background: linear-gradient(90deg, #388e3c 0%, #43cea2 100%);
-                            box-shadow: 0 4px 18px #43cea277;
+                            /* تأثير عند التمرير */
+                            background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
+                            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
+                            transform: translateY(-2px); /* رفع الزر قليلاً */
                         }}
                         .copy-material-btn .copy-icon {{
-                            font-size: 24px;
+                            /* أيقونة النسخ الأصلية */
+                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
                             margin-left: 8px;
-                            transition: color 0.2s;
-                        }}
-                        .copy-material-btn.copied {{
-                            background: linear-gradient(90deg, #388e3c 0%, #aed581 100%);
-                            color: #fff;
+                            display: block; /* لجعل SVG تعمل بشكل جيد */
                         }}
                         .copy-material-btn .copied-check {{
-                            font-size: 22px;
-                            color: #ffd600;
+                            /* أيقونة تم النسخ */
+                            font-size: 20px; /* حجم مناسب لأيقونة SVG */
+                            color: #fff; /* لون أبيض لأيقونة الصح */
                             margin-left: 8px;
+                            display: none;
+                        }}
+                        .copy-material-btn.copied .copy-icon {{
                             display: none;
                         }}
                         .copy-material-btn.copied .copied-check {{
                             display: inline;
-                            animation: fadein-check 1s;
+                            animation: fadein-check 0.5s ease-out; /* حركة أسرع وأكثر نعومة */
                         }}
                         @keyframes fadein-check {{
-                            0% {{ opacity: 0; transform: scale(0.5); }}
-                            60% {{ opacity: 1; transform: scale(1.2); }}
+                            0% {{ opacity: 0; transform: scale(0.7); }}
                             100% {{ opacity: 1; transform: scale(1); }}
                         }}
                         </style>
@@ -395,16 +400,24 @@ def run_main_app():
                                 btn.classList.remove('copied');
                             }}, 1800);
                         ">
-                            <span class="copy-icon">📋</span>
-                            <span>📋 نسخ</span>
-                            <span class="copied-check">✅ تم النسخ!</span>
+                            <span class="copy-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </span>
+                            <span>نسخ</span>
+                            <span class="copied-check">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                تم النسخ!
+                            </span>
                         </button>
                         <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
-                    """, height=48)
+                    """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
         else:
-            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")
-
-# ----------------------------------------------------
+            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
 # ----------------------------------------------------
 def main():
@@ -412,7 +425,6 @@ def main():
     st.markdown(
         """
         <div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px; margin-bottom: 35px;">
-            <!-- شعار ميزان احترافي SVG -->
             <div style="width: 90px; height: 90px; border-radius: 50%; background-color: #ecf0f1; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                 <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
                     <circle cx="36" cy="36" r="35" fill="#f5f7fa" stroke="#d0d7de" stroke-width="1"/>
@@ -444,7 +456,7 @@ def main():
         run_main_app()
         return
 
-    st.markdown("<div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة ا[...]",
+    st.markdown("<div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل:</div>",
         unsafe_allow_html=True
     )
 
@@ -460,7 +472,8 @@ def main():
                 st.success("✅ تم تفعيل النسخة التجريبية المجانية بنجاح.")
                 run_main_app()
                 st.stop()
-                st.warning("يرجى التفاعل مع الصفحة (مثلاً، النقر بالماوس أو التمرير) لتحديث الواجهة وبدء استخدام التطبيق.")
+                # ملاحظة: st.stop() يوقف تنفيذ الكود، لذا الرسالة التالية قد لا تظهر للمستخدم
+                # st.warning("يرجى التفاعل مع الصفحة (مثلاً، النقر بالماوس أو التمرير) لتحديث الواجهة وبدء استخدام التطبيق.")
 
         if trial_start is not None:
             elapsed_time = time.time() - trial_start
