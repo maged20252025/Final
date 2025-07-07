@@ -10,27 +10,27 @@ import html
 import csv
 from io import BytesIO
 
-----------------------------------------------------
+#---------------------------------------------------
 
 إعدادات الصفحة الأساسية
 
-----------------------------------------------------
+#---------------------------------------------------
 
 st.set_page_config( page_title="القوانين اليمنية بآخر تعديلاتها حتى عام 2025م", layout="wide", initial_sidebar_state="expanded" )
 
-----------------------------------------------------
+#----------------------------------------------------
 
 ثوابت ومتغيرات عامة
 
-----------------------------------------------------
+#----------------------------------------------------
 
 TRIAL_DURATION = 3 * 24 * 60 * 60  # 3 أيام TRIAL_USERS_FILE = "trial_users.txt" DEVICE_ID_FILE = "device_id.txt" ACTIVATED_FILE = "activated.txt" ACTIVATION_CODES_FILE = "activation_codes.txt" LAWS_DIR = "laws"
 
-----------------------------------------------------
+#----------------------------------------------------
 
 دوال المساعدة
 
-----------------------------------------------------
+#----------------------------------------------------
 
 def get_device_id(): if os.path.exists(DEVICE_ID_FILE): with open(DEVICE_ID_FILE, "r") as f: return f.read().strip() new_id = str(uuid.uuid4()) with open(DEVICE_ID_FILE, "w") as f: f.write(new_id) return new_id
 
