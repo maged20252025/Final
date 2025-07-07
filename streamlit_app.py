@@ -441,7 +441,7 @@ def main():
         run_main_app()
         return
 
-    st.markdown("<div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل:</div>",
+    st.markdown("<div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل</div>",
         unsafe_allow_html=True
     )
 
@@ -473,7 +473,7 @@ def main():
                     <div style='background-color:#e3f1fd;border-radius:15px;padding:22px;margin: 0 auto;max-width:450px;text-align:center;'>
                         <span style='font-size:32px;'>&#x23F3;</span>
                         <div style='font-size:20px;color:#2c3e50;margin-bottom:6px;'>
-                            عزيزي المستخدم، أنت الآن في النسخة التجريبية المجانية.
+                            عزيزي المستخدم، أنت الآن في النسخة التجريبية المجانية
                         </div>
                         <span style='font-size:19px;color:#185a9d;'>
                             الوقت المتبقي: <b>{days}</b> يوم / <b>{hours}</b> ساعة / <b>{minutes}</b> دقيقة / <b>{seconds}</b> ثانية
