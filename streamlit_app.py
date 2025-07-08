@@ -1,4 +1,13 @@
-import streamlit as st import streamlit.components.v1 as components from docx import Document from docx.shared import Inches import re import uuid import os import time import html import csv from io import BytesIO
+import streamlit as st 
+import streamlit.components.v1 as components from docx 
+import Document from docx.shared 
+import Inches import re 
+import uuid 
+import os 
+import time 
+import html 
+import csv from io 
+import BytesIO
 
 ----------------------------------------------------
 
