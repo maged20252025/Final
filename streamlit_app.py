@@ -319,7 +319,7 @@ def run_main_app():
         # خيار البحث المتقدم: تطابق تام أو بحث مرن
         advanced_search_col = st.columns([1, 2, 5])
         with advanced_search_col[2]:
-            exact_match = st.checkbox("تطابق تام للكلمة (لا تظهر مشتقاتها مثل تظلم عند البحث عن ظلم)", key="exact_match_checkbox")
+            exact_match = st.checkbox("تطابق تام للكلمة ", key="exact_match_checkbox")
         search_btn_col = st.columns([1, 2, 12])
         with search_btn_col[2]:
             submitted = st.form_submit_button("🔍 بدء البحث", use_container_width=True)
