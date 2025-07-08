@@ -151,7 +151,8 @@ def run_main_app():
         justify-content: flex-start;
     }
     /* --------- اجبار مربعات النصوص للكتابة من اليمين -------- */
-    textarea, .stTextArea textarea {
+    /* التعديل هنا: إضافة stTextInput لضمان تطبيق النمط على جميع أنواع مربعات الإدخال */
+    textarea, .stTextArea textarea, .stTextInput > div > div > input {
         direction: rtl !important;
         text-align: right !important;
     }
@@ -417,11 +418,10 @@ def run_main_app():
                         <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
                     """, height=60) # زيادة الارتفاع للسماح بعرض الأيقونات بشكل جيد
         else:
-            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")# ----------------------------------------------------
+            st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")
+# ----------------------------------------------------
 # الدالة الرئيسية لتشغيل التطبيق (مع شاشة التفعيل/التجربة)
 # ----------------------------------------------------
-
-
 
 def render_header():
     if os.path.exists("header.html"):
@@ -449,37 +449,4 @@ def main():
         remaining_time = int(TRIAL_DURATION - elapsed_time)
         if remaining_time > 0:
             run_main_app()
-            return
-        else:
-            st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
-
-    # 👇 هنا فقط نعرض الرسالة إذا لم يكن مفعّل ولا توجد تجربة
-    st.markdown("""
-    <div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>
-        مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل:
-    </div>""", unsafe_allow_html=True)
-
-    # ----------- مربع النسخة التجريبية المجانية -----------------
-    with st.container(border=True):
-        st.markdown("<h3 style='text-align:center; color:#2c3e50;'>⏱️ النسخة التجريبية المجانية</h3>", unsafe_allow_html=True)
-
-        if trial_start is None:
-            if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
-                register_trial(device_id)
-                st.rerun()  # ✅ إعادة تحميل الصفحة مباشرة
-
-    st.markdown("---")
-
-    # ------------ التفعيل ---------------
-    with st.container(border=True):
-        st.markdown("<h3 style='text-align:center; color:#2c3e50;'>🔐 النسخة المدفوعة</h3>", unsafe_allow_html=True)
-        code = st.text_input("أدخل كود التفعيل هنا:", key="activation_code_input", help="أدخل الكود الذي حصلت عليه لتفعيل النسخة الكاملة.")
-        if st.button("✅ تفعيل الآن", key="activate_button", use_container_width=True):
-            if code and activate_app(code.strip()):
-                st.success("✅ تم التفعيل بنجاح! يرجى إعادة تشغيل التطبيق لتطبيق التغييرات.")
-                st.stop()
-            else:
-                st.error("❌ كود التفعيل غير صحيح أو انتهت صلاحيته.")
-
-if __name__ == "__main__":
-    main()
+            ret
