@@ -449,4 +449,3 @@ def main():
         remaining_time = int(TRIAL_DURATION - elapsed_time)
         if remaining_time > 0:
             run_main_app()
-            ret
