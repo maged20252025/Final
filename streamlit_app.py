@@ -151,10 +151,14 @@ def run_main_app():
         justify-content: flex-start;
     }
     /* --------- اجبار مربعات النصوص للكتابة من اليمين -------- */
-    /* التعديل هنا: إضافة stTextInput لضمان تطبيق النمط على جميع أنواع مربعات الإدخال */
-    textarea, .stTextArea textarea, .stTextInput > div > div > input {
-        direction: rtl !important;
-        text-align: right !important;
+    /* تنسيق حقل النص والمكون المحيط به */
+    textarea, .stTextArea, .stTextArea textarea {
+        direction: rtl !important;         /* اتجاه الكتابة من اليمين لليسار */
+        text-align: right !important;      /* محاذاة النص لليمين */
+        padding-right: 10px;               /* إضافة فراغ داخلي من الجهة اليمنى لتحسين المظهر */
+        font-family: "Tahoma", "Arial", sans-serif; /* خطوط داعمة للغة العربية */
+        font-size: 16px;                   /* حجم خط مناسب */
+        line-height: 1.5;                  /* تحسين التباعد بين الأسطر */
     }
     /* --------- اجبار كل عناصر النتائج أن تكون يمين -------- */
     .stButton, .stDownloadButton, .stMetric {
