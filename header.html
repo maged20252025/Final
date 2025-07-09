@@ -3,93 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القوانين اليمنية - تصميم فاخر</title>
+    <title>تطبيق القوانين اليمنية - تصميم مكتبي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* تعريف الألوان المخصصة */
+        /* تعريف الألوان المخصصة للمظهر المكتبي الفاخر */
         :root {
-            --primary-gold: #DAA520; /* ذهبي أساسي */
-            --light-gold: #FFD700;   /* ذهبي فاتح/لمعان */
-            --dark-charcoal: #36454F; /* رمادي فحمي داكن للنصوص */
-            --off-white: #F8F8F8;     /* أوف وايت للخلفية */
-            --creamy-bg: #FDF9F3;     /* خلفية كريمية ناعمة */
-            --dark-brown: #5C4033;    /* بني داكن للعناصر الرصينة */
-            --border-color: #E0E0E0;  /* لون حدود خفيف */
-            --shadow-color: rgba(0, 0, 0, 0.07); /* لون الظل */
+            --primary-dark-blue: #2c3e50;    /* كحلي داكن جداً (للنص والعناصر الرئيسية) */
+            --secondary-gold: #B8860B;     /* ذهبي متوسط (للمسات البارزة) */
+            --light-cream: #FDFBF8;        /* كريمي فاتح جداً (للخلفية) */
+            --off-white-bg: #F5F5F5;       /* أوف وايت للعناصر الخفيفة */
+            --deep-brown: #4A2B1A;         /* بني داكن (للتفاصيل الفاخرة) */
+            --text-light-color: #6c757d;   /* رمادي فاتح للنصوص الثانوية */
+            --border-subtle: #e0e0e0;      /* حدود خفيفة */
+            --header-bg-gradient-start: #34495e; /* أزرق رمادي داكن */
+            --header-bg-gradient-end: #4a647d;   /* أزرق رمادي أفتح قليلاً */
+            --shadow-subtle: rgba(0, 0, 0, 0.06); /* ظل خفيف */
         }
 
         /* الأنماط الأساسية */
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            background-color: var(--creamy-bg); /* خلفية كريمية */
+            background-color: var(--light-cream);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--dark-charcoal); /* نص أساسي بلون فحمي داكن */
+            color: var(--primary-dark-blue);
             line-height: 1.8;
+            padding: 20px; /* لضمان عدم التصاق التصميم بحواف الشاشة الصغيرة */
+            box-sizing: border-box; /* لضمان حساب البادينج ضمن العرض */
         }
 
         .container {
             background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 12px 40px var(--shadow-color);
+            border-radius: 25px; /* زوايا أكثر استدارة */
+            box-shadow: 0 15px 45px var(--shadow-subtle);
             padding: 40px;
-            max-width: 650px;
-            width: 90%;
+            max-width: 700px;
+            width: 100%; /* تأكد من الاستجابة */
             text-align: right;
             direction: rtl;
             overflow: hidden;
-            border: 1px solid var(--border-color); /* حدود خفيفة */
+            border: 1px solid var(--border-subtle);
         }
 
         /* رأس التطبيق */
         .header {
-            background: linear-gradient(145deg, var(--primary-gold) 0%, var(--light-gold) 100%); /* تدرج ذهبي */
+            background: linear-gradient(145deg, var(--header-bg-gradient-start) 0%, var(--header-bg-gradient-end) 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 28px;
+            border-radius: 18px; /* زوايا أقل حدة من الحاوية */
             font-size: 28px;
             text-align: center;
             margin-bottom: 35px;
-            box-shadow: 0 6px 20px rgba(218, 165, 32, 0.3); /* ظل ذهبي خفيف */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             font-weight: 700;
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.5px; /* تباعد أحرف بسيط */
+            letter-spacing: 0.5px;
+            display: flex; /* لتوسيط الأيقونة والنص */
+            align-items: center;
+            justify-content: center;
         }
 
         .header .icon {
-            margin-left: 10px;
-            font-size: 30px;
-            vertical-align: middle;
+            margin-left: 15px;
+            font-size: 32px;
+            color: var(--secondary-gold); /* أيقونة ذهبية */
         }
 
         /* الوصف الترحيبي */
         .welcome-description {
-            font-size: 17px;
+            font-size: 18px;
             margin: 25px 0 40px 0;
-            color: var(--dark-charcoal);
-            line-height: 1.9;
+            color: var(--primary-dark-blue);
+            line-height: 2; /* تباعد أسطر أكبر لسهولة القراءة */
         }
 
         /* قسم الميزات */
         .features h3 {
             font-size: 22px;
-            color: var(--dark-charcoal);
+            color: var(--primary-dark-blue);
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             font-weight: 600;
-            border-bottom: 2px solid var(--primary-gold); /* خط ذهبي تحت العنوان */
             padding-bottom: 10px;
+            position: relative;
+        }
+
+        .features h3::after { /* خط ذهبي تحت العنوان */
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px; /* طول الخط */
+            height: 3px;
+            background-color: var(--secondary-gold);
+            border-radius: 2px;
         }
 
         .features h3 .icon {
             margin-left: 12px;
-            color: var(--primary-gold); /* لون ذهبي لأيقونة الكتاب */
+            color: var(--secondary-gold);
             font-size: 24px;
         }
 
@@ -103,56 +121,83 @@
             font-size: 17px;
             margin-bottom: 18px;
             display: flex;
-            align-items: flex-start; /* لمحاذاة النص مع الأيقونة من الأعلى */
-            color: var(--dark-charcoal);
+            align-items: flex-start;
+            color: var(--primary-dark-blue);
         }
 
         .features ul li .icon {
-            color: var(--dark-brown); /* لون أيقونات الميزات (بني داكن) */
+            color: var(--deep-brown); /* أيقونات الميزات بلون بني داكن */
             margin-left: 12px;
             font-size: 20px;
-            flex-shrink: 0; /* لمنع الأيقونة من الانكماش */
+            flex-shrink: 0;
             position: relative;
-            top: 2px; /* لضبط المحاذاة الدقيقة */
+            top: 3px;
         }
 
         /* قسم التجربة المجانية */
         .free-trial {
-            background-color: var(--off-white); /* لون خلفية أوف وايت */
-            border-radius: 15px;
-            padding: 25px 30px;
+            background-color: var(--off-white-bg);
+            border-radius: 18px; /* زوايا متناسقة مع الرأس */
+            padding: 28px 35px;
             margin-top: 45px;
             font-size: 18px;
-            color: var(--dark-charcoal);
-            border: 1px dashed var(--primary-gold); /* حدود منقطة ذهبية */
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--secondary-gold); /* حدود صلبة ذهبية */
             display: flex;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             line-height: 1.6;
+            position: relative; /* لتثبيت الأيقونة */
+            overflow: hidden; /* لإخفاء الظلال الزائدة من الحدود */
         }
 
         .free-trial strong {
-            color: var(--primary-gold); /* ذهبي للنص المميز */
+            color: var(--deep-brown); /* نص مميز بلون بني داكن */
             font-weight: 700;
         }
 
         .free-trial .icon {
-            font-size: 28px;
-            margin-left: 18px;
-            color: var(--primary-gold); /* لون أيقونة الهدية الذهبي */
-            animation: pulse 1.5s infinite; /* تأثير نبض خفيف */
+            font-size: 30px;
+            margin-left: 20px;
+            color: var(--secondary-gold);
+            animation: fadeInScale 1s ease-out forwards; /* تأثير دخول خفيف */
         }
 
-        /* تحريك أيقونة الهدية (نبض خفيف) */
-        @keyframes pulse {
-            0% {
+        /* تحريك أيقونة الهدية (دخول خفيف) */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
                 transform: scale(1);
             }
-            50% {
-                transform: scale(1.05);
+        }
+
+        /* تحسينات التجاوبية */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+                border-radius: 15px;
             }
-            100% {
-                transform: scale(1);
+            .header {
+                font-size: 24px;
+                padding: 20px;
+            }
+            .welcome-description, .features ul li, .free-trial {
+                font-size: 16px;
+            }
+            .features h3 {
+                font-size: 20px;
+            }
+            .header .icon, .features h3 .icon, .features ul li .icon, .free-trial .icon {
+                font-size: 26px; /* تقليل حجم الأيقونات على الشاشات الصغيرة */
+                margin-left: 10px;
+            }
+            .free-trial .icon {
+                font-size: 24px;
+                margin-left: 15px;
             }
         }
     </style>
@@ -161,7 +206,7 @@
 
 <div class="container">
   <div class="header">
-    <i class="fa-solid fa-handshake icon"></i> مرحبًا بك في تطبيق القوانين اليمنية
+    <i class="fa-solid fa-gavel icon"></i> مرحبًا بك في تطبيق القوانين اليمنية
   </div>
 
   <p class="welcome-description">
@@ -169,17 +214,20 @@
   </p>
 
   <div class="features">
-    <h3><i class="fa-solid fa-book icon"></i> ميزات التطبيق:</h3>
+    <h3><i class="fa-solid fa-scroll icon"></i> ميزات التطبيق:</h3>
     <ul>
       <li><i class="fa-solid fa-check-circle icon"></i> الوصول إلى آخر تحديثات القوانين اليمنية حتى عام 2025</li>
       <li><i class="fa-solid fa-search icon"></i> بحث متقدم باستخدام الكلمات أو رقم المادة</li>
+      <li><i class="fa-solid fa-copy icon"></i> إمكانية نسخ نص المادة القانونية</li>
+      <li><i class="fa-solid fa-file-alt icon"></i> الاطلاع على نص القانون كاملاً</li>
+      <li><i class="fa-solid fa-bookmark icon"></i> إمكانية إضافة الملاحظات الشخصية والإشارات المرجعية على المواد</li>
       <li><i class="fa-solid fa-file-word icon"></i> إمكانية تصدير النتائج إلى Word</li>
       <li><i class="fa-solid fa-wifi-slash icon"></i> تشغيل التطبيق بالكامل بدون إنترنت</li>
     </ul>
   </div>
 
   <div class="free-trial">
-    <i class="fa-solid fa-gift icon"></i> <strong>تجربة مجانية لمدة 7 أيام:</strong> استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك.
+    <i class="fa-solid fa-medal icon"></i> <strong>تجربة مجانية لمدة 7 أيام:</strong> استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك.
   </div>
 </div>
 
