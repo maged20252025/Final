@@ -1,27 +1,174 @@
-<div style="direction: rtl; text-align: right; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; background-color: #fdfdfd; border: 1px solid #dbeaf7; border-radius: 16px; padding: 25px; max-width: 700px; margin: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05); color: #2c3e50; line-height: 1.8;">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق القوانين اليمنية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* الأنماط الأساسية */
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5; /* لون خلفية فاتح جداً */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-  <!-- العنوان على شكل بطاقة بارزة -->
-  <div style="background-color: #2d91e3; color: white; padding: 20px 25px; border-radius: 12px; font-size: 20px; text-align: center; margin-bottom: 20px;">
-    👋 مرحبًا بك في تطبيق القوانين اليمنية
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: right;
+            direction: rtl;
+            line-height: 1.7;
+            overflow: hidden; /* لإخفاء أي جزء زائد من الظل أو الزوايا */
+        }
+
+        /* رأس التطبيق */
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%); /* تدرج أزرق وأخضر */
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header span {
+            display: inline-block;
+            transform: rotate(-10deg); /* تأثير بسيط على اليد */
+            margin-left: 10px;
+        }
+
+        /* الوصف الترحيبي */
+        .welcome-description {
+            font-size: 17px;
+            margin: 25px 0 35px 0;
+            color: #555;
+            line-height: 1.9;
+        }
+
+        /* قسم الميزات */
+        .features h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .features h3 i {
+            margin-left: 10px;
+            color: #4CAF50; /* لون أيقونة الكتاب */
+        }
+
+        .features ul {
+            list-style: none; /* إزالة النقاط الافتراضية */
+            padding: 0;
+            margin: 0;
+        }
+
+        .features ul li {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #444;
+        }
+
+        .features ul li i {
+            color: #2196F3; /* لون أيقونات الميزات */
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        /* قسم التجربة المجانية */
+        .free-trial {
+            background-color: #e3f2fd; /* لون خلفية أزرق فاتح جداً */
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 40px;
+            font-size: 17px;
+            color: #2c3e50;
+            border: 1px solid #bbdefb;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .free-trial strong {
+            color: #0d47a1; /* أزرق داكن للنص المميز */
+            font-weight: 700;
+        }
+
+        .free-trial i {
+            font-size: 24px;
+            margin-left: 15px;
+            color: #FFC107; /* لون أيقونة الهدية */
+            animation: bounce 1.5s infinite;
+        }
+
+        /* الأيقونات - يجب تضمين مكتبة أيقونات مثل Font Awesome */
+        /* لأغراض العرض، سنفترض وجودها. يمكنك إضافة هذا في <head> */
+        /* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> */
+        /* أو يمكنك استخدام أيقونات SVG مضمنة */
+        /* لغرض التجربة، سأضيف أيقونات بسيطة */
+        .icon {
+            display: inline-block;
+            font-style: normal; /* لإلغاء إمالة الأيقونة الافتراضية */
+        }
+
+        /* تحريك أيقونة الهدية */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-8px);
+            }
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <span class="icon">👋</span> مرحبًا بك في تطبيق القوانين اليمنية
   </div>
 
-  <!-- وصف ترحيبي مختصر -->
-  <p style="font-size: 16px; margin-bottom: 18px;">
-    نرحب بك في تطبيقنا القانوني المصمم لتيسير وصولك إلى مواد القانون اليمني بطريقة ذكية وسلسة.
+  <p class="welcome-description">
+    نرحب بك في تطبيقنا القانوني المصمم ليوفر لك تجربة سلسة وسريعة في الوصول إلى مواد القانون اليمني.
   </p>
 
-  <!-- الميزات -->
-  <h3 style="font-size: 17px; margin-bottom: 10px;">📚 ميزات التطبيق:</h3>
-  <ul style="padding-right: 20px; font-size: 15px; list-style-type: '✔'; line-height: 1.7;">
-    <li>الوصول إلى القوانين اليمنية حتى عام 2025</li>
-    <li>بحث ذكي بالكلمات أو رقم المادة</li>
-    <li>تصدير النتائج إلى Word</li>
-    <li>يعمل بدون الحاجة للإنترنت</li>
-  </ul>
+  <div class="features">
+    <h3><span class="icon">📚</span> ميزات التطبيق:</h3>
+    <ul>
+      <li><span class="icon">✅</span> الوصول إلى آخر تحديثات القوانين اليمنية حتى عام 2025</li>
+      <li><span class="icon">🔍</span> بحث متقدم باستخدام الكلمات أو رقم المادة</li>
+      <li><span class="icon">📄</span> إمكانية تصدير النتائج إلى Word</li>
+      <li><span class="icon">🌐</span> تشغيل التطبيق بالكامل بدون إنترنت</li>
+    </ul>
+  </div>
 
-  <!-- التجربة المجانية -->
-  <p style="font-size: 15px; margin-top: 20px;">
-    🎁 <strong>تجربة مجانية:</strong> استمتع بكافة الميزات لمدة <strong>7 أيام</strong> مجانًا، ثم اختر إن أردت الاشتراك.
-  </p>
-
+  <div class="free-trial">
+    <span class="icon">🎁</span> <strong>تجربة مجانية لمدة 7 أيام:</strong> استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك.
+  </div>
 </div>
+
+</body>
+</html>
