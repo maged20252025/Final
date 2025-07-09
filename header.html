@@ -3,201 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القوانين اليمنية - تصميم مكتبي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>تطبيق القوانين اليمنية - تصميم مُحسّن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* تعريف الألوان المخصصة للمظهر المكتبي الفاخر */
         :root {
-            --primary-dark-blue: #2c3e50;    /* كحلي داكن جداً (للنص والعناصر الرئيسية) */
-            --secondary-gold: #B8860B;     /* ذهبي متوسط (للمسات البارزة) */
-            --light-cream: #FDFBF8;        /* كريمي فاتح جداً (للخلفية) */
-            --off-white-bg: #F5F5F5;       /* أوف وايت للعناصر الخفيفة */
-            --deep-brown: #4A2B1A;         /* بني داكن (للتفاصيل الفاخرة) */
-            --text-light-color: #6c757d;   /* رمادي فاتح للنصوص الثانوية */
-            --border-subtle: #e0e0e0;      /* حدود خفيفة */
-            --header-bg-gradient-start: #34495e; /* أزرق رمادي داكن */
-            --header-bg-gradient-end: #4a647d;   /* أزرق رمادي أفتح قليلاً */
-            --shadow-subtle: rgba(0, 0, 0, 0.06); /* ظل خفيف */
+            --primary-text-color: #2c3e50;    /* كحلي داكن جداً للنص الأساسي */
+            --accent-gold: #B8860B;          /* ذهبي مميز (أكثر رصانة) */
+            --background-cream: #FDFBF8;     /* خلفية كريمية ناعمة */
+            --card-background: #ffffff;      /* خلفية البطاقات الداخلية */
+            --header-dark: #34495e;          /* لون داكن لرأس البطاقة العلوية */
+            --header-text-light: #f4f6f8;    /* نص فاتح لرأس البطاقة العلوية */
+            --secondary-brown: #5C4033;      /* بني داكن للمسات "المكتبية" */
+            --border-light: #e8e8e8;         /* حدود فاتحة */
+            --shadow-subtle: rgba(0, 0, 0, 0.08); /* ظل خفيف */
         }
 
         /* الأنماط الأساسية */
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            background-color: var(--light-cream);
+            background-color: var(--background-cream);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--primary-dark-blue);
+            color: var(--primary-text-color);
             line-height: 1.8;
             padding: 20px; /* لضمان عدم التصاق التصميم بحواف الشاشة الصغيرة */
             box-sizing: border-box; /* لضمان حساب البادينج ضمن العرض */
         }
 
         .container {
-            background-color: #ffffff;
-            border-radius: 25px; /* زوايا أكثر استدارة */
+            background-color: var(--card-background);
+            border-radius: 20px;
             box-shadow: 0 15px 45px var(--shadow-subtle);
-            padding: 40px;
+            padding: 0; /* البادينج سيكون داخل الأقسام لمرونة أكبر */
             max-width: 700px;
             width: 100%; /* تأكد من الاستجابة */
             text-align: right;
             direction: rtl;
-            overflow: hidden;
-            border: 1px solid var(--border-subtle);
+            overflow: hidden; /* لضمان عدم خروج أي شيء عن الحدود المستديرة */
+            border: 1px solid var(--border-light);
         }
 
-        /* رأس التطبيق */
-        .header {
-            background: linear-gradient(145deg, var(--header-bg-gradient-start) 0%, var(--header-bg-gradient-end) 100%);
-            color: white;
-            padding: 28px;
-            border-radius: 18px; /* زوايا أقل حدة من الحاوية */
+        /* البطاقة العلوية (الترحيب) - تم تغييرها بالكامل */
+        .header-card {
+            background-color: var(--header-dark); /* خلفية داكنة موحدة */
+            color: var(--header-text-light); /* نص فاتح */
+            padding: 35px 30px; /* بادينج أكبر */
+            border-bottom-left-radius: 0; /* إزالة الاستدارة السفلية */
+            border-bottom-right-radius: 0;
             font-size: 28px;
             text-align: center;
-            margin-bottom: 35px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
+            font-weight: 800; /* خط أكثر سمكًا للعنوان */
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.5px;
-            display: flex; /* لتوسيط الأيقونة والنص */
-            align-items: center;
-            justify-content: center;
+            letter-spacing: 0.8px; /* تباعد أحرف أكبر */
+            line-height: 1.5;
+            box-shadow: inset 0 -5px 15px rgba(0,0,0,0.1); /* ظل داخلي خفيف */
+            border-radius: 20px 20px 0 0; /* زوايا مستديرة فقط من الأعلى */
         }
 
-        .header .icon {
-            margin-left: 15px;
-            font-size: 32px;
-            color: var(--secondary-gold); /* أيقونة ذهبية */
+        .header-card .header-icon {
+            font-size: 45px; /* أيقونة أكبر */
+            color: var(--accent-gold); /* أيقونة ذهبية */
+            margin-bottom: 15px; /* مسافة تحت الأيقونة */
+            display: block; /* لجعلها تأخذ سطرًا كاملاً */
+        }
+
+        /* محتوى البطاقة الرئيسي */
+        .content-section {
+            padding: 30px 40px; /* بادينج للمحتوى الداخلي */
         }
 
         /* الوصف الترحيبي */
         .welcome-description {
-            font-size: 18px;
-            margin: 25px 0 40px 0;
-            color: var(--primary-dark-blue);
-            line-height: 2; /* تباعد أسطر أكبر لسهولة القراءة */
+            font-size: 17px;
+            margin: 25px 0 35px 0;
+            color: var(--primary-text-color);
+            line-height: 1.9;
         }
 
         /* قسم الميزات */
         .features h3 {
-            font-size: 22px;
-            color: var(--primary-dark-blue);
-            margin-bottom: 25px;
+            font-size: 20px;
+            color: var(--primary-text-color);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            font-weight: 600;
-            padding-bottom: 10px;
+            font-weight: 700;
+            padding-bottom: 8px;
             position: relative;
-        }
-
-        .features h3::after { /* خط ذهبي تحت العنوان */
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 60px; /* طول الخط */
-            height: 3px;
-            background-color: var(--secondary-gold);
-            border-radius: 2px;
+            border-bottom: 2px solid var(--border-light); /* خط فاصل بسيط */
         }
 
         .features h3 .icon {
-            margin-left: 12px;
-            color: var(--secondary-gold);
-            font-size: 24px;
+            margin-left: 10px;
+            color: var(--accent-gold); /* أيقونة ذهبية للعنوان */
+            font-size: 22px;
         }
 
         .features ul {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 20px 0;
         }
 
         .features ul li {
-            font-size: 17px;
-            margin-bottom: 18px;
+            font-size: 16px;
+            margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
-            color: var(--primary-dark-blue);
+            color: var(--primary-text-color);
         }
 
         .features ul li .icon {
-            color: var(--deep-brown); /* أيقونات الميزات بلون بني داكن */
-            margin-left: 12px;
-            font-size: 20px;
+            color: var(--secondary-brown); /* أيقونات الميزات بلون بني داكن */
+            margin-left: 10px;
+            font-size: 18px;
             flex-shrink: 0;
             position: relative;
-            top: 3px;
+            top: 2px;
         }
 
-        /* قسم التجربة المجانية */
-        .free-trial {
-            background-color: var(--off-white-bg);
-            border-radius: 18px; /* زوايا متناسقة مع الرأس */
-            padding: 28px 35px;
-            margin-top: 45px;
+        /* البطاقة السفلية (التجربة المجانية) - تم تغييرها بالكامل */
+        .free-trial-card {
+            background: linear-gradient(135deg, var(--secondary-brown) 0%, var(--accent-gold) 100%); /* تدرج من البني للذهبي */
+            color: var(--header-text-light); /* نص فاتح ليبرز على الخلفية الداكنة */
+            padding: 30px 40px;
+            margin-top: 30px; /* مسافة من القسم العلوي */
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
             font-size: 18px;
-            color: var(--primary-dark-blue);
-            border: 2px solid var(--secondary-gold); /* حدود صلبة ذهبية */
-            display: flex;
-            align-items: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            font-weight: 600;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.1); /* ظل داخلي خفيف */
+            border-radius: 0 0 20px 20px; /* زوايا مستديرة فقط من الأسفل */
+            display: flex; /* لترتيب العناصر داخله */
+            flex-direction: column; /* ترتيب عمودي */
+            align-items: center; /* توسيط العناصر أفقياً */
+        }
+
+        /* تعديلات على نمط النص داخل بطاقة التجربة المجانية */
+        .free-trial-card .main-message {
+            font-size: 24px; /* حجم كبير للرسالة الرئيسية */
+            font-weight: 800; /* سمك إضافي */
+            color: #FFECB3; /* لون ذهبي فاتح جداً مميز */
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .free-trial-card .sub-message {
+            font-size: 16px; /* حجم أصغر للرسالة الثانوية */
             line-height: 1.6;
-            position: relative; /* لتثبيت الأيقونة */
-            overflow: hidden; /* لإخفاء الظلال الزائدة من الحدود */
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9); /* شفافية بسيطة */
+            max-width: 80%; /* لضبط عرض النص وعدم امتداده كثيراً */
         }
 
-        .free-trial strong {
-            color: var(--deep-brown); /* نص مميز بلون بني داكن */
+        .free-trial-card .trial-button {
+            display: inline-block;
+            background-color: var(--accent-gold); /* زر بلون ذهبي صلب */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
             font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 16px; /* حجم خط الزر */
         }
 
-        .free-trial .icon {
-            font-size: 30px;
-            margin-left: 20px;
-            color: var(--secondary-gold);
-            animation: fadeInScale 1s ease-out forwards; /* تأثير دخول خفيف */
+        .free-trial-card .trial-button:hover {
+            background-color: #DAA520; /* ذهبي أغمق عند التمرير */
+            transform: translateY(-2px);
         }
 
-        /* تحريك أيقونة الهدية (دخول خفيف) */
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        /* أيقونة الهدية البسيطة */
+        .free-trial-card .gift-icon {
+            font-size: 38px; /* أيقونة هدية أكبر */
+            color: #FFECB3; /* نفس لون الهايلايت الذهبي الفاتح */
+            margin-bottom: 15px;
+            display: block;
+            animation: pulse-gold 1.8s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
         }
 
         /* تحسينات التجاوبية */
         @media (max-width: 768px) {
             .container {
-                padding: 30px;
                 border-radius: 15px;
             }
-            .header {
+            .header-card {
                 font-size: 24px;
-                padding: 20px;
+                padding: 25px 20px;
+                border-radius: 15px 15px 0 0;
             }
-            .welcome-description, .features ul li, .free-trial {
-                font-size: 16px;
+            .header-card .header-icon {
+                font-size: 38px;
+            }
+            .content-section {
+                padding: 25px 30px;
+            }
+            .welcome-description, .features ul li {
+                font-size: 15px;
             }
             .features h3 {
+                font-size: 18px;
+            }
+            .features h3 .icon, .features ul li .icon {
+                font-size: 18px;
+            }
+            .free-trial-card {
+                padding: 25px 30px;
+                border-radius: 0 0 15px 15px;
+            }
+            .free-trial-card .main-message {
                 font-size: 20px;
             }
-            .header .icon, .features h3 .icon, .features ul li .icon, .free-trial .icon {
-                font-size: 26px; /* تقليل حجم الأيقونات على الشاشات الصغيرة */
-                margin-left: 10px;
+            .free-trial-card .sub-message {
+                font-size: 14px;
             }
-            .free-trial .icon {
-                font-size: 24px;
-                margin-left: 15px;
+            .free-trial-card .trial-button {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+            .free-trial-card .gift-icon {
+                font-size: 30px;
             }
         }
     </style>
@@ -205,29 +244,34 @@
 <body>
 
 <div class="container">
-  <div class="header">
-    <i class="fa-solid fa-gavel icon"></i> مرحبًا بك في تطبيق القوانين اليمنية
+  <div class="header-card">
+    <i class="fa-solid fa-scale-balanced header-icon"></i> مرحبًا بك في تطبيق القوانين اليمنية
   </div>
 
-  <p class="welcome-description">
-    نرحب بك في تطبيقنا القانوني المصمم ليوفر لك تجربة سلسة وسريعة في الوصول إلى مواد القانون اليمني.
-  </p>
+  <div class="content-section">
+    <p class="welcome-description">
+      نرحب بك في تطبيقنا القانوني المصمم ليوفر لك تجربة سلسة وسريعة في الوصول إلى مواد القانون اليمني.
+    </p>
 
-  <div class="features">
-    <h3><i class="fa-solid fa-scroll icon"></i> ميزات التطبيق:</h3>
-    <ul>
-      <li><i class="fa-solid fa-check-circle icon"></i> الوصول إلى آخر تحديثات القوانين اليمنية حتى عام 2025</li>
-      <li><i class="fa-solid fa-search icon"></i> بحث متقدم باستخدام الكلمات أو رقم المادة</li>
-      <li><i class="fa-solid fa-copy icon"></i> إمكانية نسخ نص المادة القانونية</li>
-      <li><i class="fa-solid fa-file-alt icon"></i> الاطلاع على نص القانون كاملاً</li>
-      <li><i class="fa-solid fa-bookmark icon"></i> إمكانية إضافة الملاحظات الشخصية والإشارات المرجعية على المواد</li>
-      <li><i class="fa-solid fa-file-word icon"></i> إمكانية تصدير النتائج إلى Word</li>
-      <li><i class="fa-solid fa-wifi-slash icon"></i> تشغيل التطبيق بالكامل بدون إنترنت</li>
-    </ul>
+    <div class="features">
+      <h3><i class="fa-solid fa-book-reader icon"></i> ميزات التطبيق:</h3>
+      <ul>
+        <li><i class="fa-solid fa-check-circle icon"></i> الوصول إلى آخر تحديثات القوانين اليمنية حتى عام 2025</li>
+        <li><i class="fa-solid fa-search icon"></i> بحث متقدم باستخدام الكلمات أو رقم المادة</li>
+        <li><i class="fa-solid fa-copy icon"></i> إمكانية نسخ نص المادة القانونية</li>
+        <li><i class="fa-solid fa-file-alt icon"></i> الاطلاع على نص القانون كاملاً</li>
+        <li><i class="fa-solid fa-file-word icon"></i> إمكانية تصدير النتائج إلى Word</li>
+        <li><i class="fa-solid fa-wifi-slash icon"></i> تشغيل التطبيق بالكامل بدون إنترنت</li>
+      </ul>
+    </div>
   </div>
 
-  <div class="free-trial">
-    <i class="fa-solid fa-medal icon"></i> <strong>تجربة مجانية لمدة 7 أيام:</strong> استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك.
+  <div class="free-trial-card">
+    <i class="fa-solid fa-hand-holding-dollar gift-icon"></i> <span class="main-message">ابدأ تجربتك المجانية لمدة <span style="color: #FDD835; font-size: 1.2em;">7 أيام!</span></span>
+    <p class="sub-message">
+      استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك بعد انتهاء الفترة المجانية.
+    </p>
+    <a href="#" class="trial-button">انضم الآن واستكشف</a>
   </div>
 </div>
 
