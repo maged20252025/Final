@@ -627,7 +627,6 @@ def main():
             st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
     
     with st.container(border=True):
-        st.markdown("", unsafe_allow_html=True)
         if trial_start is None:
             if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
                 register_trial(device_id)
