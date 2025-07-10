@@ -625,10 +625,7 @@ def main():
             return
         else:
             st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
-    st.markdown("""
-    <div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>
     
-    </div>""", unsafe_allow_html=True)
     with st.container(border=True):
         st.markdown("", unsafe_allow_html=True)
         if trial_start is None:
