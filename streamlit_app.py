@@ -90,32 +90,49 @@ def activate_app(code):
     return False
 
 def highlight_keywords(text, keywords, normalized_keywords=None, exact_match=False):
-    original_text = text  # نحتفظ بالنص الأصلي
-    normalized_text = normalize_arabic_text(original_text)
-
-    # أولًا: تمييز التطابق التام
+    # Pass 1: Highlight exact word matches (primary highlight)
     for kw in keywords:
-        if not kw:
-            continue
-        pattern = re.compile(r"(?<!\w)" + re.escape(kw) + r"(?!\w)", re.IGNORECASE)
+        if not kw: continue
+        pattern = re.compile(r"(?<!\w)"+re.escape(kw)+r"(?!\w)", re.IGNORECASE)
         text = pattern.sub(r'<mark>\g<0></mark>', text)
+    
+    # Pass 2: Highlight soft/partial matches (secondary highlight)
+    # FIX: This block should run if normalized_keywords are provided, regardless of `exact_match` checkbox.
+    if normalized_keywords: # <--- تم إزالة `exact_match and` من هذا الشرط
+        # قم بإنشاء نسخة نظيفة من النص الأصلي (بدون أي تمييز HTML موجود)
+        # لاستخدامها في التطبيع والتحقق من التطابق الجزئي بدقة.
+        plain_text_for_norm = re.sub(r'<mark[^>]*>|<\/mark>', '', text)
+        normalized_plain_text = normalize_arabic_text(plain_text_for_norm)
 
-    # ثانيًا: تمييز الكلمات المشابهة بعد التطبيع إذا لم تكن قد وُجدت كتطابق تام
-    if exact_match and normalized_keywords:
         for i, norm_kw in enumerate(normalized_keywords):
-            if not norm_kw:
-                continue
+            if not norm_kw: continue
+            original_kw = keywords[i] # الكلمة الأصلية المقابلة للكلمة المطبعة
 
-            # نبحث في النص الأصلي عن الكلمات التي بعد التطبيع تطابق الكلمة المفتاحية
-            words = re.findall(r'\b\w+\b', original_text)
-            for w in set(words):
-                if normalize_arabic_text(w) == norm_kw:
-                    # لا نكرر تمييز الكلمة إذا كانت قد ظُللَت بالفعل
-                    if f'<mark>{w}</mark>' in text or f'<mark class="mark-soft">{w}</mark>' in text:
-                        continue
-                    pattern = re.compile(rf'\b{re.escape(w)}\b')
-                    text = pattern.sub(f'<mark class="mark-soft">{w}</mark>', text)
+            # الشرط لتطبيق التمييز الخفيف:
+            # 1. العثور على الكلمة المطبعة (norm_kw) كجزء من النص المطبع.
+            # 2. التأكد من أن الكلمة الأصلية (original_kw) لم يتم تمييزها بالفعل كتطابق تام.
+            #    (نستخدم `plain_text_for_norm` هنا لضمان البحث عن الكلمة الأصلية في النص النظيف قبل التمييز)
+            if norm_kw in normalized_plain_text and \
+               not re.search(r"(?<!\w)"+re.escape(original_kw)+r"(?!\w)", plain_text_for_norm, re.IGNORECASE):
+                
+                # تطبيق التمييز الخفيف على النص الذي ربما يكون قد تم تمييزه مسبقًا
+                # (مع الانتباه لعدم تداخل علامات HTML)
+                # هذا النمط سيبحث عن norm_kw كجزء من الكلمات.
+                # نستخدم `re.escape(norm_kw)` لضمان التعامل الصحيح مع أي أحرف خاصة في الكلمة المطبعة.
+                pattern = re.compile(re.escape(norm_kw), re.IGNORECASE)
+                
+                # دالة الاستبدال لضمان عدم تغيير الكلمات التي تم تمييزها بالفعل
+                def replacer(m):
+                    match_span = m.span()
+                    # تحقق مما إذا كان هذا التطابق يتداخل مع علامة <mark> موجودة
+                    # هذا التحقق مبسط وقد لا يكون مثاليًا لكل السيناريوهات المعقدة لتداخل HTML
+                    if "<mark" in text[max(0, match_span[0]-10):min(len(text), match_span[1]+10)]:
+                        return m.group(0) # لا تميز إذا كانت داخل علامة <mark>
+                    return f'<mark class="mark-soft">{m.group(0)}</mark>'
+                
+                text = pattern.sub(replacer, text)
     return text
+
 def export_results_to_word(results, filename="نتائج_البحث.docx"):
     from docx import Document
     document = Document()
@@ -127,11 +144,12 @@ def export_results_to_word(results, filename="نتائج_البحث.docx"):
             document.add_heading(f"القانون: {r['law']} - المادة: {r['num']}", level=2)
             document.add_paragraph(r['plain'])
             if i < len(results) - 1:
-                document.add_page_break()
+                document.add_page_break() 
     buffer = BytesIO()
     document.save(buffer)
     buffer.seek(0)
     return buffer.getvalue()
+
 def normalize_arabic_numbers(text):
     arabic_to_english = str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789')
     return text.translate(arabic_to_english)
@@ -442,176 +460,18 @@ def run_main_app():
                                                 add_result = True
                                                 break
                                         else:
+                                            # البحث عن الكلمة المطبعة (kw من normalized_kw_list)
+                                            # كنص فرعي في النص الكامل المطبع.
+                                            # هذا يمثل سلوك "التطابق الجزئي"
                                             if kw in simple_full_text:
                                                 add_result = True
                                                 break
                                 if add_result:
+                                    # نمرر exact_match هنا للدالة لتحديد طريقة التمييز
                                     highlighted = highlight_keywords(full_text, kw_list, normalized_keywords=normalized_kw_list, exact_match=exact_match) if kw_list else full_text
                                     results.append({
-                                        "law": law_name,
-                                        "num": last_article,
-                                        "text": highlighted,
-                                        "plain": full_text
-                                    })
-                                current_article_paragraphs = []
-                            last_article = match.group(1)
-                        current_article_paragraphs.append(txt)
-                    if current_article_paragraphs:
-                        full_text = "\n".join(current_article_paragraphs)
-                        add_result = False
-                        simple_full_text = normalize_arabic_text(full_text)
-                        if search_by_article and normalize_arabic_numbers(last_article) == norm_article:
-                            add_result = True
-                        elif normalized_kw_list:
-                            for idx, kw in enumerate(normalized_kw_list):
-                                if not kw:
-                                    continue
-                                if exact_match:
-                                    pattern = r'(?<!\w)'+re.escape(kw)+r'(?!\w)'
-                                    if re.search(pattern, simple_full_text):
-                                        add_result = True
-                                        break
-                                else:
-                                    if kw in simple_full_text:
-                                        add_result = True
-                                        break
-                        if add_result:
-                            highlighted = highlight_keywords(full_text, kw_list, normalized_keywords=normalized_kw_list, exact_match=exact_match) if kw_list else full_text
-                            results.append({
-                                "law": law_name,
-                                "num": last_article,
-                                "text": highlighted,
-                                "plain": full_text
-                            })
-            st.session_state.results = results
-            st.session_state.search_done = True
-            if not results:
-                st.info("لم يتم العثور على نتائج مطابقة للبحث.")
-
-        if st.session_state.get("search_done", False) and st.session_state.results:
-            st.markdown("<h2 style='text-align: center; color: #388E3C;'>نتائج البحث في القوانين 📚</h2>", unsafe_allow_html=True)
-            st.markdown("---")
-        if st.session_state.get("search_done", False):
-            results = st.session_state.results
-            unique_laws = sorted(set(r["law"] for r in results))
-            st.markdown('<div class="rtl-metric">', unsafe_allow_html=True)
-            st.metric(label="📊 إجمالي النتائج التي تم العثور عليها", value=f"{len(results)}", delta=f"في {len(unique_laws)} قانون/ملف")
-            st.markdown('</div>', unsafe_allow_html=True)
-            if results:
-                export_data = export_results_to_word(results)
-                st.markdown('<div class="rtl-download-btn">', unsafe_allow_html=True)
-                st.download_button(
-                    label="⬇️ تصدير النتائج إلى Word",
-                    data=export_data,
-                    file_name="نتائج_البحث_القوانين_اليمنية.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    key="download_button_word_main",
-                    use_container_width=False
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
-            else:
-                st.warning("لا توجد نتائج لتصديرها.")
-            st.markdown("---")
-            if results:
-                st.markdown('<div style="direction: rtl; text-align: right;">فلترة النتائج حسب القانون:</div>', unsafe_allow_html=True)
-                selected_law_filter = st.selectbox("", ["الكل"] + unique_laws, key="results_law_filter", label_visibility="collapsed")
-                filtered = results if selected_law_filter == "الكل" else [r for r in results if r["law"] == selected_law_filter]
-                for i, r in enumerate(filtered):
-                    with st.expander(f"📚 المادة ({r['num']}) من قانون {r['law']}", expanded=True):
-                        st.markdown(f'''
-                        <div class="result-box-night">
-                            <p style="font-size:17px;line-height:1.8;margin-top:0px;">
-                                {r["text"]}
-                            </p>
-                        </div>
-                        ''', unsafe_allow_html=True)
-                        components.html(f"""
-                            <style>
-                            .copy-material-btn {{
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 10px;
-                                background: linear-gradient(90deg, #1abc9c 0%, #2980b9 100%);
-                                color: #fff;
-                                border: none;
-                                border-radius: 30px;
-                                font-size: 18px;
-                                font-family: 'Cairo', 'Tajawal', sans-serif;
-                                padding: 10px 22px;
-                                cursor: pointer;
-                                box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
-                                transition: all 0.3s ease;
-                                margin-bottom: 10px;
-                                direction: rtl;
-                                white-space: nowrap;
-                            }}
-                            .copy-material-btn:hover {{
-                                background: linear-gradient(90deg, #2980b9 0%, #1abc9c 100%);
-                                box-shadow: 0 6px 20px rgba(41, 128, 185, 0.6);
-                                transform: translateY(-2px);
-                            }}
-                            .copy-material-btn .copy-icon {{
-                                font-size: 20px;
-                                margin-left: 8px;
-                                display: block;
-                            }}
-                            .copy-material-btn .copied-check {{
-                                font-size: 20px;
-                                color: #fff;
-                                margin-left: 8px;
-                                display: none;
-                            }}
-                            .copy-material-btn.copied .copy-icon {{
-                                display: none;
-                            }}
-                            .copy-material-btn.copied .copied-check {{
-                                display: inline;
-                                animation: fadein-check 0.5s ease-out;
-                            }}
-                            @keyframes fadein-check {{
-                                0% {{ opacity: 0; transform: scale(0.7); }}
-                                100% {{ opacity: 1; transform: scale(1); }}
-                            }}
-                            </style>
-                            <button class="copy-material-btn" id="copy_btn_{i}_{r['law']}_{r['num']}" onclick="
-                                navigator.clipboard.writeText(document.getElementById('plain_text_{i}_{r['law']}_{r['num']}').innerText);
-                                var btn = document.getElementById('copy_btn_{i}_{r['law']}_{r['num']}');
-                                btn.classList.add('copied');
-                                setTimeout(function(){{
-                                    btn.classList.remove('copied');
-                                }}, 1800);
-                            ">
-                                <span class="copy-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </span>
-                                <span>نسخ</span>
-                                <span class="copied-check">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    تم النسخ!
-                                </span>
-                            </button>
-                            <div id="plain_text_{i}_{r['law']}_{r['num']}" style="display:none;">{html.escape(r['plain'])}</div>
-                        """, height=60)
-            else:
-                st.info("لا توجد نتائج لعرضها حاليًا. يرجى إجراء بحث جديد.")
-
-    # تبويب عرض القانون الكامل
-    with tabs[1]:
-        if not os.path.exists(LAWS_DIR):
-            st.error(f"⚠️ مجلد '{LAWS_DIR}/' غير موجود. يرجى التأكد من وجود ملفات القوانين.")
-            return
-        files = [f for f in os.listdir(LAWS_DIR) if f.endswith(".docx")]
-        if not files:
-            st.warning(f"📂 لا توجد ملفات قوانين في مجلد '{LAWS_DIR}/'.")
-            return
-        render_law_file_viewer(files)
-
-def render_header():
+                                        "law": law_name
+            def render_header():
     if os.path.exists("header.html"):
         with open("header.html", "r", encoding="utf-8") as f:
             header_html = f.read()
