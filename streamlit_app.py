@@ -13,7 +13,6 @@ from io import BytesIO
 # إعدادات الصفحة الأساسية
 # ----------------------------------------------------
 st.set_page_config(
-
 st.markdown("""
     <style>
         .block-container {
