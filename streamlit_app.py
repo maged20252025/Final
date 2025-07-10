@@ -626,11 +626,30 @@ def main():
         else:
             st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
     
-    with st.container(border=True):
-        if trial_start is None:
-            if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
-                register_trial(device_id)
-                st.rerun()
+    
+st.markdown("""
+<style>
+.start-trial-btn button {
+    background: linear-gradient(90deg, #4caf50 0%, #2e7d32 100%) !important;
+    color: white !important;
+    font-size: 18px !important;
+    padding: 10px 25px !important;
+    border-radius: 12px !important;
+    margin: 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+</style>
+""", unsafe_allow_html=True)
+
+if trial_start is None:
+    col = st.columns(3)
+    with col[1]:  # زر في المنتصف
+        st.markdown('<div class="start-trial-btn">', unsafe_allow_html=True)
+        if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
+            register_trial(device_id)
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown("---")
     with st.container(border=True):
         st.markdown("<h3 style='text-align:center; color:#2c3e50;'>🔐 النسخة المدفوعة</h3>", unsafe_allow_html=True)
