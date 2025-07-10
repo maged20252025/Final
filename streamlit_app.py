@@ -630,7 +630,7 @@ def main():
     
     </div>""", unsafe_allow_html=True)
     with st.container(border=True):
-        st.markdown("<h3 style='text-align:center; color:#2c3e50;'>⏱️ النسخة التجريبية المجانية</h3>", unsafe_allow_html=True)
+        st.markdown("", unsafe_allow_html=True)
         if trial_start is None:
             if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
                 register_trial(device_id)
