@@ -116,6 +116,22 @@ def highlight_keywords(text, keywords, normalized_keywords=None, exact_match=Fal
                     pattern = re.compile(rf'\b{re.escape(w)}\b')
                     text = pattern.sub(f'<mark class="mark-soft">{w}</mark>', text)
     return text
+def export_results_to_word(results, filename="نتائج_البحث.docx"):
+    from docx import Document
+    document = Document()
+    document.add_heading('نتائج البحث في القوانين اليمنية', level=1)
+    if not results:
+        document.add_paragraph("لم يتم العثور على نتائج للكلمات المفتاحية المحددة.")
+    else:
+        for i, r in enumerate(results):
+            document.add_heading(f"القانون: {r['law']} - المادة: {r['num']}", level=2)
+            document.add_paragraph(r['plain'])
+            if i < len(results) - 1:
+                document.add_page_break()
+    buffer = BytesIO()
+    document.save(buffer)
+    buffer.seek(0)
+    return buffer.getvalue()
 def normalize_arabic_numbers(text):
     arabic_to_english = str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789')
     return text.translate(arabic_to_english)
