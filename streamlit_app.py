@@ -13,6 +13,7 @@ from io import BytesIO
 # إعدادات الصفحة الأساسية
 # ----------------------------------------------------
 st.set_page_config(
+
 st.markdown("""
 <style>
 .block-container {
@@ -24,6 +25,7 @@ header {
 }
 </style>
 """, unsafe_allow_html=True)
+
     page_title="القوانين اليمنية بآخر تعديلاتها حتى عام 2025م",
     layout="wide",
     initial_sidebar_state="expanded"
