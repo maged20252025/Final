@@ -14,15 +14,15 @@ from io import BytesIO
 # ----------------------------------------------------
 st.set_page_config(
 st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 0rem !important;
-        }
-        header {
-            visibility: hidden;
-            height: 0px;
-        }
-    </style>
+<style>
+.block-container {
+    padding-top: 0rem !important;
+}
+header {
+    visibility: hidden;
+    height: 0px;
+}
+</style>
 """, unsafe_allow_html=True)
     page_title="القوانين اليمنية بآخر تعديلاتها حتى عام 2025م",
     layout="wide",
