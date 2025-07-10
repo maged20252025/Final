@@ -614,7 +614,6 @@ def main():
     render_header()
     device_id = get_device_id()
     trial_start = get_trial_start(device_id)
-    trial_start = get_trial_start(device_id)
     if is_activated():
         run_main_app()
         return
@@ -626,21 +625,16 @@ def main():
             return
         else:
             st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
-    
-st.markdown("""
-<div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>
-    <div style='background-color:#1c2d3f; color:white; padding:30px 20px; border-radius:20px;'>
-        <h3>مرحباً بك في تطبيق القوانين اليمنية</h3>
-        <p>تصفح شامل لأحدث القوانين، محرك بحث ذكي، بدون الحاجة للإنترنت.</p>
-        <p>تجربة مجانية لمدة 7 أيام!</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-if trial_start is None:
-    if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
-        register_trial(device_id)
-        st.rerun()
+    st.markdown("""
+    <div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>
+        مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل:
+    </div>""", unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("<h3 style='text-align:center; color:#2c3e50;'>⏱️ النسخة التجريبية المجانية</h3>", unsafe_allow_html=True)
+        if trial_start is None:
+            if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
+                register_trial(device_id)
+                st.rerun()
     st.markdown("---")
     with st.container(border=True):
         st.markdown("<h3 style='text-align:center; color:#2c3e50;'>🔐 النسخة المدفوعة</h3>", unsafe_allow_html=True)
