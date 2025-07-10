@@ -1,184 +1,26 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تطبيق القوانين اليمنية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background-color: #FDFBF8;
-      color: #2c3e50;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+<div style="direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 12px; border: 1px solid #ddd;">
 
-    .container {
-      background-color: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
-      max-width: 700px;
-      width: 100%;
-      overflow: hidden;
-      direction: rtl;
-      border: 1px solid #e8e8e8;
-    }
+<h3 style="margin-top: 0;">👋 مرحبًا بك في تطبيق القوانين اليمنية</h3>
+<p style="font-size: 16px; margin-bottom: 20px;">
+يسعدنا انضمامك إلى تطبيقنا القانوني.
+</p>
 
-    .header-card {
-      background-color: #34495e;
-      color: #f4f6f8;
-      padding: 35px 30px;
-      font-size: 28px;
-      font-weight: 800;
-      text-align: center;
-      border-radius: 20px 20px 0 0;
-    }
+<h4>📚 نبذة عن التطبيق:</h4>
+<ul style="font-size: 15px; line-height: 1.8;">
+  <li>الوصول السريع إلى أحدث مواد القوانين اليمنية حتى عام 2025</li>
+  <li>بحث ذكي باستخدام الكلمات المفتاحية أو أرقام المواد</li>
+  <li>إمكانية تصدير النتائج إلى ملف Word</li>
+  <li>الاستخدام الكامل بدون الحاجة للاتصال بالإنترنت</li>
+</ul>
 
-    .header-icon {
-      font-size: 45px;
-      color: #B8860B;
-      margin-bottom: 15px;
-      display: block;
-    }
+<p style="margin-top: 20px; font-size: 15px;">
+🎁 <strong>وللتعرّف أكثر،</strong> نوفر لك تجربة مجانية لمدة <strong>7 أيام</strong>، يمكنك خلالها استخدام كافة الميزات بدون قيود.<br>
+وبعد انتهاء الفترة، يمكنك اتخاذ القرار المناسب لمواصلة الاشتراك.
+</p>
 
-    .content-section {
-      padding: 30px 40px;
-    }
+<p style="margin-top: 20px; font-size: 15px;">
+✨ للبدء، اضغط على <strong>"بدء التجربة المجانية"</strong>.
+</p>
 
-    .welcome-description {
-      font-size: 17px;
-      margin: 25px 0 35px 0;
-      line-height: 1.9;
-    }
-
-    .features h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid #e8e8e8;
-      padding-bottom: 10px;
-    }
-
-    .features h3 .icon {
-      margin-left: 10px;
-      color: #B8860B;
-    }
-
-    .features ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .features li {
-      font-size: 16px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: start;
-    }
-
-    .features li .icon {
-      color: #5C4033;
-      margin-left: 10px;
-      font-size: 18px;
-      flex-shrink: 0;
-      position: relative;
-      top: 2px;
-    }
-
-    .free-trial-card {
-      background: linear-gradient(135deg, #5C4033 0%, #B8860B 100%);
-      color: #f4f6f8;
-      padding: 30px 40px;
-      text-align: center;
-      border-radius: 0 0 20px 20px;
-    }
-
-    .free-trial-card .gift-icon {
-      font-size: 38px;
-      color: #FFECB3;
-      margin-bottom: 15px;
-    }
-
-    .free-trial-card .main-message {
-      font-size: 24px;
-      font-weight: 800;
-      color: #FFECB3;
-      margin-bottom: 10px;
-    }
-
-    .free-trial-card .sub-message {
-      font-size: 16px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 20px;
-    }
-
-    .free-trial-card .trial-button {
-      display: inline-block;
-      background-color: #B8860B;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-    }
-
-    .free-trial-card .trial-button:hover {
-      background-color: #DAA520;
-      transform: translateY(-2px);
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <div class="header-card">
-      <i class="fa-solid fa-scale-balanced header-icon"></i>
-      مرحبًا بك في تطبيق القوانين اليمنية
-    </div>
-
-    <div class="content-section">
-      <p class="welcome-description">
-        نرحب بك في تطبيقنا القانوني المصمم ليوفر لك تجربة سلسة وسريعة في الوصول إلى مواد القانون اليمني.
-      </p>
-
-      <div class="features">
-        <h3><i class="fa-solid fa-book-reader icon"></i> ميزات التطبيق:</h3>
-        <ul>
-          <li><i class="fa-solid fa-check-circle icon"></i> الوصول إلى آخر تحديثات القوانين اليمنية حتى عام 2025</li>
-          <li><i class="fa-solid fa-search icon"></i> بحث متقدم باستخدام الكلمات أو رقم المادة</li>
-          <li><i class="fa-solid fa-copy icon"></i> إمكانية نسخ نص المادة القانونية</li>
-          <li><i class="fa-solid fa-file-alt icon"></i> الاطلاع على نص القانون كاملاً</li>
-          <li><i class="fa-solid fa-file-word icon"></i> إمكانية تصدير النتائج إلى Word</li>
-          <li><i class="fa-solid fa-wifi-slash icon"></i> تشغيل التطبيق بالكامل بدون إنترنت</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="free-trial-card">
-      <i class="fa-solid fa-hand-holding-dollar gift-icon"></i>
-      <div class="main-message">
-        ابدأ تجربتك المجانية لمدة <span style="color: #FDD835;">7 أيام!</span>
-      </div>
-      <div class="sub-message">
-        استمتع بجميع مزايا التطبيق بلا قيود، ثم اختر إن أردت مواصلة الاشتراك بعد انتهاء الفترة المجانية.
-      </div>
-      <a href="#" class="trial-button">انضم الآن واستكشف</a>
-    </div>
-  </div>
-
-</body>
-</html>
+</div>
