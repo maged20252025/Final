@@ -90,39 +90,32 @@ def activate_app(code):
     return False
 
 def highlight_keywords(text, keywords, normalized_keywords=None, exact_match=False):
+    original_text = text  # نحتفظ بالنص الأصلي
+    normalized_text = normalize_arabic_text(original_text)
+
+    # أولًا: تمييز التطابق التام
     for kw in keywords:
-        if not kw: continue
-        pattern = re.compile(r"(?<!\w)"+re.escape(kw)+r"(?!\w)", re.IGNORECASE)
+        if not kw:
+            continue
+        pattern = re.compile(r"(?<!\w)" + re.escape(kw) + r"(?!\w)", re.IGNORECASE)
         text = pattern.sub(r'<mark>\g<0></mark>', text)
+
+    # ثانيًا: تمييز الكلمات المشابهة بعد التطبيع إذا لم تكن قد وُجدت كتطابق تام
     if exact_match and normalized_keywords:
-        normalized_text = normalize_arabic_text(text)
         for i, norm_kw in enumerate(normalized_keywords):
-            if not norm_kw: continue
-            original_kw = keywords[i]
-            if norm_kw in normalize_arabic_text(text) and not re.search(r"(?<!\w)"+re.escape(original_kw)+r"(?!\w)", text):
-                pattern = re.compile(norm_kw, re.IGNORECASE)
-                def replacer(m):
-                    return f'<mark class="mark-soft">{m.group(0)}</mark>'
-                text = pattern.sub(replacer, text)
+            if not norm_kw:
+                continue
+
+            # نبحث في النص الأصلي عن الكلمات التي بعد التطبيع تطابق الكلمة المفتاحية
+            words = re.findall(r'\b\w+\b', original_text)
+            for w in set(words):
+                if normalize_arabic_text(w) == norm_kw:
+                    # لا نكرر تمييز الكلمة إذا كانت قد ظُللَت بالفعل
+                    if f'<mark>{w}</mark>' in text or f'<mark class="mark-soft">{w}</mark>' in text:
+                        continue
+                    pattern = re.compile(rf'\b{re.escape(w)}\b')
+                    text = pattern.sub(f'<mark class="mark-soft">{w}</mark>', text)
     return text
-
-def export_results_to_word(results, filename="نتائج_البحث.docx"):
-    from docx import Document
-    document = Document()
-    document.add_heading('نتائج البحث في القوانين اليمنية', level=1)
-    if not results:
-        document.add_paragraph("لم يتم العثور على نتائج للكلمات المفتاحية المحددة.")
-    else:
-        for i, r in enumerate(results):
-            document.add_heading(f"القانون: {r['law']} - المادة: {r['num']}", level=2)
-            document.add_paragraph(r['plain'])
-            if i < len(results) - 1:
-                document.add_page_break() 
-    buffer = BytesIO()
-    document.save(buffer)
-    buffer.seek(0)
-    return buffer.getvalue()
-
 def normalize_arabic_numbers(text):
     arabic_to_english = str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789')
     return text.translate(arabic_to_english)
