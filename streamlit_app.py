@@ -13,7 +13,6 @@ from io import BytesIO
 # إعدادات الصفحة الأساسية
 # ----------------------------------------------------
 st.set_page_config(
-st.markdown('''<style>.block-container {padding-top: 0rem !important;} header {visibility: hidden; height: 0px;}</style>''', unsafe_allow_html=True)
     page_title="القوانين اليمنية بآخر تعديلاتها حتى عام 2025م",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -628,7 +627,7 @@ def main():
             st.error("❌ انتهت مدة التجربة المجانية لهذا الجهاز. يرجى تفعيل التطبيق للاستمرار في الاستخدام.")
     st.markdown("""
     <div style='text-align:center; color:#2c3e50; font-size:22px; font-weight:bold; padding:20px;'>
-    
+        مرحباً بك عزيزي المستخدم، قم بالنقر على أيقونة بدء النسخة المجانية أو أدخل كود التفعيل:
     </div>""", unsafe_allow_html=True)
     with st.container(border=True):
         st.markdown("<h3 style='text-align:center; color:#2c3e50;'>⏱️ النسخة التجريبية المجانية</h3>", unsafe_allow_html=True)
