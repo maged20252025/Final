@@ -13,6 +13,18 @@ from io import BytesIO
 # إعدادات الصفحة الأساسية
 # ----------------------------------------------------
 st.set_page_config(
+
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 0rem !important;
+        }
+        header {
+            visibility: hidden;
+            height: 0px;
+        }
+    </style>
+""", unsafe_allow_html=True)
     page_title="القوانين اليمنية بآخر تعديلاتها حتى عام 2025م",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -630,6 +642,7 @@ def main():
     
     </div>""", unsafe_allow_html=True)
     with st.container(border=True):
+        st.markdown("<h3 style='text-align:center; color:#2c3e50;'>⏱️ النسخة التجريبية المجانية</h3>", unsafe_allow_html=True)
         if trial_start is None:
             if st.button("🚀 بدء النسخة المجانية", key="start_trial_button", use_container_width=True):
                 register_trial(device_id)
